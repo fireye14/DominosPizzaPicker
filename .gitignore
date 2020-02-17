@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/backend/DominosPizzaPicker/bin
+/backend/DominosPizzaPicker/obj
+/client/DominosPizzaPicker.Client/DominosPizzaPicker.Client/bin/Debug/netstandard2.0
+/client/DominosPizzaPicker.Client/DominosPizzaPicker.Client/obj
+/client/DominosPizzaPicker.Client/DominosPizzaPicker.Client.Android/bin/Debug
+/client/DominosPizzaPicker.Client/DominosPizzaPicker.Client.Android/obj

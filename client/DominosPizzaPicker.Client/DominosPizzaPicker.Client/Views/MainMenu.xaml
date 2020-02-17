@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<c:CustomMainMenu xmlns="http://xamarin.com/schemas/2014/forms" 
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
+             xmlns:local="clr-namespace:DominosPizzaPicker.Client.Views"
+			 x:Class="DominosPizzaPicker.Client.Views.MainMenu"
+			 Title="Main Menu">
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="CenterAndExpand" Margin="0,50">
+            <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" BorderWidth="1" Margin="15,5"/>
+            <Button x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" BorderWidth="1" Margin="15,5"/>
+            <Button x:Name="btnStats" Text="Pizza Stats" Clicked="OnbtnStatsClicked" Font="Large" BorderWidth="1" Margin="15,5"/>
+        </StackLayout>
+    </ContentPage.Content>
+</c:CustomMainMenu>
