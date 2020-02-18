@@ -9,7 +9,7 @@ namespace DominosPizzaPicker.Backend.Models
     public class DominosPizzaPickerContext : DbContext
     {
         // connection string set in Web.config
-        private const string connectionStringName = "Name=MS_TableConnectionString";
+        private const string connectionStringName = "Name=PizzaPickerConnectionString";
 
         public DominosPizzaPickerContext() : base(connectionStringName)
         {

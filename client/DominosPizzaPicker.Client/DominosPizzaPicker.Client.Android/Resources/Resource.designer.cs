@@ -3283,44 +3283,44 @@ namespace DominosPizzaPicker.Client.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f0d004f
-			public const int abc_background_cache_hint_selector_material_dark = 2131558479;
-			
 			// aapt resource value: 0x7f0d0050
-			public const int abc_background_cache_hint_selector_material_light = 2131558480;
+			public const int abc_background_cache_hint_selector_material_dark = 2131558480;
 			
 			// aapt resource value: 0x7f0d0051
-			public const int abc_btn_colored_borderless_text_material = 2131558481;
+			public const int abc_background_cache_hint_selector_material_light = 2131558481;
 			
 			// aapt resource value: 0x7f0d0052
-			public const int abc_btn_colored_text_material = 2131558482;
+			public const int abc_btn_colored_borderless_text_material = 2131558482;
 			
 			// aapt resource value: 0x7f0d0053
-			public const int abc_color_highlight_material = 2131558483;
+			public const int abc_btn_colored_text_material = 2131558483;
 			
 			// aapt resource value: 0x7f0d0054
-			public const int abc_hint_foreground_material_dark = 2131558484;
+			public const int abc_color_highlight_material = 2131558484;
 			
 			// aapt resource value: 0x7f0d0055
-			public const int abc_hint_foreground_material_light = 2131558485;
+			public const int abc_hint_foreground_material_dark = 2131558485;
+			
+			// aapt resource value: 0x7f0d0056
+			public const int abc_hint_foreground_material_light = 2131558486;
 			
 			// aapt resource value: 0x7f0d0004
 			public const int abc_input_method_navigation_guard = 2131558404;
 			
-			// aapt resource value: 0x7f0d0056
-			public const int abc_primary_text_disable_only_material_dark = 2131558486;
-			
 			// aapt resource value: 0x7f0d0057
-			public const int abc_primary_text_disable_only_material_light = 2131558487;
+			public const int abc_primary_text_disable_only_material_dark = 2131558487;
 			
 			// aapt resource value: 0x7f0d0058
-			public const int abc_primary_text_material_dark = 2131558488;
+			public const int abc_primary_text_disable_only_material_light = 2131558488;
 			
 			// aapt resource value: 0x7f0d0059
-			public const int abc_primary_text_material_light = 2131558489;
+			public const int abc_primary_text_material_dark = 2131558489;
 			
 			// aapt resource value: 0x7f0d005a
-			public const int abc_search_url_text = 2131558490;
+			public const int abc_primary_text_material_light = 2131558490;
+			
+			// aapt resource value: 0x7f0d005b
+			public const int abc_search_url_text = 2131558491;
 			
 			// aapt resource value: 0x7f0d0005
 			public const int abc_search_url_text_normal = 2131558405;
@@ -3331,29 +3331,29 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f0d0007
 			public const int abc_search_url_text_selected = 2131558407;
 			
-			// aapt resource value: 0x7f0d005b
-			public const int abc_secondary_text_material_dark = 2131558491;
-			
 			// aapt resource value: 0x7f0d005c
-			public const int abc_secondary_text_material_light = 2131558492;
+			public const int abc_secondary_text_material_dark = 2131558492;
 			
 			// aapt resource value: 0x7f0d005d
-			public const int abc_tint_btn_checkable = 2131558493;
+			public const int abc_secondary_text_material_light = 2131558493;
 			
 			// aapt resource value: 0x7f0d005e
-			public const int abc_tint_default = 2131558494;
+			public const int abc_tint_btn_checkable = 2131558494;
 			
 			// aapt resource value: 0x7f0d005f
-			public const int abc_tint_edittext = 2131558495;
+			public const int abc_tint_default = 2131558495;
 			
 			// aapt resource value: 0x7f0d0060
-			public const int abc_tint_seek_thumb = 2131558496;
+			public const int abc_tint_edittext = 2131558496;
 			
 			// aapt resource value: 0x7f0d0061
-			public const int abc_tint_spinner = 2131558497;
+			public const int abc_tint_seek_thumb = 2131558497;
 			
 			// aapt resource value: 0x7f0d0062
-			public const int abc_tint_switch_track = 2131558498;
+			public const int abc_tint_spinner = 2131558498;
+			
+			// aapt resource value: 0x7f0d0063
+			public const int abc_tint_switch_track = 2131558499;
 			
 			// aapt resource value: 0x7f0d0008
 			public const int accent_material_dark = 2131558408;
@@ -3409,20 +3409,20 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f0d0003
 			public const int cardview_shadow_start_color = 2131558403;
 			
-			// aapt resource value: 0x7f0d004e
-			public const int colorAccent = 2131558478;
-			
-			// aapt resource value: 0x7f0d004c
-			public const int colorPrimary = 2131558476;
+			// aapt resource value: 0x7f0d004f
+			public const int colorAccent = 2131558479;
 			
 			// aapt resource value: 0x7f0d004d
-			public const int colorPrimaryDark = 2131558477;
+			public const int colorPrimary = 2131558477;
+			
+			// aapt resource value: 0x7f0d004e
+			public const int colorPrimaryDark = 2131558478;
 			
 			// aapt resource value: 0x7f0d0040
 			public const int design_bottom_navigation_shadow_color = 2131558464;
 			
-			// aapt resource value: 0x7f0d0063
-			public const int design_error = 2131558499;
+			// aapt resource value: 0x7f0d0064
+			public const int design_error = 2131558500;
 			
 			// aapt resource value: 0x7f0d0041
 			public const int design_fab_shadow_end_color = 2131558465;
@@ -3448,8 +3448,8 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f0d0048
 			public const int design_snackbar_background_color = 2131558472;
 			
-			// aapt resource value: 0x7f0d0064
-			public const int design_tint_password_toggle = 2131558500;
+			// aapt resource value: 0x7f0d0065
+			public const int design_tint_password_toggle = 2131558501;
 			
 			// aapt resource value: 0x7f0d0016
 			public const int dim_foreground_disabled_material_dark = 2131558422;
@@ -3568,17 +3568,20 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f0d0038
 			public const int secondary_text_disabled_material_light = 2131558456;
 			
+			// aapt resource value: 0x7f0d004c
+			public const int splash_background = 2131558476;
+			
 			// aapt resource value: 0x7f0d0039
 			public const int switch_thumb_disabled_material_dark = 2131558457;
 			
 			// aapt resource value: 0x7f0d003a
 			public const int switch_thumb_disabled_material_light = 2131558458;
 			
-			// aapt resource value: 0x7f0d0065
-			public const int switch_thumb_material_dark = 2131558501;
-			
 			// aapt resource value: 0x7f0d0066
-			public const int switch_thumb_material_light = 2131558502;
+			public const int switch_thumb_material_dark = 2131558502;
+			
+			// aapt resource value: 0x7f0d0067
+			public const int switch_thumb_material_light = 2131558503;
 			
 			// aapt resource value: 0x7f0d003b
 			public const int switch_thumb_normal_material_dark = 2131558459;
@@ -4362,26 +4365,26 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020130
-			public const int avd_hide_password_1 = 2130837808;
-			
 			// aapt resource value: 0x7f020131
-			public const int avd_hide_password_2 = 2130837809;
+			public const int avd_hide_password_1 = 2130837809;
 			
 			// aapt resource value: 0x7f020132
-			public const int avd_hide_password_3 = 2130837810;
+			public const int avd_hide_password_2 = 2130837810;
+			
+			// aapt resource value: 0x7f020133
+			public const int avd_hide_password_3 = 2130837811;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020133
-			public const int avd_show_password_1 = 2130837811;
-			
 			// aapt resource value: 0x7f020134
-			public const int avd_show_password_2 = 2130837812;
+			public const int avd_show_password_1 = 2130837812;
 			
 			// aapt resource value: 0x7f020135
-			public const int avd_show_password_3 = 2130837813;
+			public const int avd_show_password_2 = 2130837813;
+			
+			// aapt resource value: 0x7f020136
+			public const int avd_show_password_3 = 2130837814;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -5022,11 +5025,11 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f020129
 			public const int notification_icon_background = 2130837801;
 			
-			// aapt resource value: 0x7f02012e
-			public const int notification_template_icon_bg = 2130837806;
-			
 			// aapt resource value: 0x7f02012f
-			public const int notification_template_icon_low_bg = 2130837807;
+			public const int notification_template_icon_bg = 2130837807;
+			
+			// aapt resource value: 0x7f020130
+			public const int notification_template_icon_low_bg = 2130837808;
 			
 			// aapt resource value: 0x7f02012a
 			public const int notification_tile_bg = 2130837802;
@@ -5035,10 +5038,13 @@ namespace DominosPizzaPicker.Client.Droid
 			public const int notify_panel_notification_icon_bg = 2130837803;
 			
 			// aapt resource value: 0x7f02012c
-			public const int tooltip_frame_dark = 2130837804;
+			public const int splash_screen = 2130837804;
 			
 			// aapt resource value: 0x7f02012d
-			public const int tooltip_frame_light = 2130837805;
+			public const int tooltip_frame_dark = 2130837805;
+			
+			// aapt resource value: 0x7f02012e
+			public const int tooltip_frame_light = 2130837806;
 			
 			static Drawable()
 			{
@@ -6026,6 +6032,9 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f030004
 			public const int pizza_foreground = 2130903044;
 			
+			// aapt resource value: 0x7f030005
+			public const int pizza_main = 2130903045;
+			
 			static Mipmap()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -6259,8 +6268,8 @@ namespace DominosPizzaPicker.Client.Droid
 			// aapt resource value: 0x7f080170
 			public const int Animation_Design_BottomSheetDialog = 2131231088;
 			
-			// aapt resource value: 0x7f080193
-			public const int AppCompatDialogStyle = 2131231123;
+			// aapt resource value: 0x7f080194
+			public const int AppCompatDialogStyle = 2131231124;
 			
 			// aapt resource value: 0x7f0800ab
 			public const int Base_AlertDialog_AppCompat = 2131230891;
@@ -6768,6 +6777,9 @@ namespace DominosPizzaPicker.Client.Droid
 			
 			// aapt resource value: 0x7f080192
 			public const int MainTheme_Base = 2131231122;
+			
+			// aapt resource value: 0x7f080193
+			public const int MainTheme_Splash = 2131231123;
 			
 			// aapt resource value: 0x7f080001
 			public const int NestedScrollBarStyle = 2131230721;
