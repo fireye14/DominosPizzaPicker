@@ -7,7 +7,8 @@
              xmlns:b="clr-namespace:DominosPizzaPicker.Client.Helpers.Behaviors"
              x:TypeArguments="vm:UpdatePizzaViewModel"
              x:Class="DominosPizzaPicker.Client.Views.UpdatePizza"
-             Title="Update Pizza">
+             Title=""
+             BackgroundColor="#3F51B5">
     <ContentPage.ToolbarItems>
         <ToolbarItem Name="Refresh" Command="{Binding RefreshCommand}"/>
     </ContentPage.ToolbarItems>

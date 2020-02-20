@@ -49,7 +49,10 @@ namespace DominosPizzaPicker.Client.Droid
         public async void SimulateStartup()
         {            
             var pizzaMan = PizzaManager.DefaultManager;
-            await pizzaMan.GetUneatenPizzaCount();            
+
+            // this will ensure that all tables are hit - not sure if that makes a difference
+            var p = await pizzaMan.GetRandomUneatenPizza();
+            await p.ToStringAsync();
         }
     }
 }

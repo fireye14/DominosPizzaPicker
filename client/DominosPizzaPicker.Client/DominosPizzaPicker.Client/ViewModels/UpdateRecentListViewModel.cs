@@ -21,7 +21,7 @@ namespace DominosPizzaPicker.Client.ViewModels
         PizzaManager pizzaMan;
         // for some reason, background colors appear on top of the tap animation. make semi-transparent to be able to see it sort of
         Color evenColor = Color.White.MultiplyAlpha(0.7);
-        Color oddColor = Color.FromHex("#2196F3").MultiplyAlpha(0.7);
+        Color oddColor = Color.FromHex("#3F51B5").MultiplyAlpha(0.7);
         #endregion
 
 
