@@ -17,6 +17,7 @@ namespace DominosPizzaPicker.Client.ViewModels
     {
         #region Fields
 
+        private PizzaViewManager pizzaViewMan;
         private PizzaManager pizzaMan;
 
         #endregion
@@ -96,6 +97,7 @@ namespace DominosPizzaPicker.Client.ViewModels
         #region Constructor
         public UpdatePizzaViewModel()
         {
+            pizzaViewMan = PizzaViewManager.DefaultManager;
             pizzaMan = PizzaManager.DefaultManager;
         }
         #endregion
@@ -111,11 +113,15 @@ namespace DominosPizzaPicker.Client.ViewModels
         public async Task LoadPizzaAsync(string id)
         {
             Id = id;
-            var pizza = await pizzaMan.GetSinglePizza(Id);
-            SauceName = await pizza.GetSauceName();
-            Topping1Name = await pizza.GetTopping1Name();
-            Topping2Name = await pizza.GetTopping2Name();
-            Topping3Name = await pizza.GetTopping3Name();
+            var pizza = await pizzaViewMan.GetSinglePizza(Id);
+            //SauceName = await pizza.GetSauceName();
+            //Topping1Name = await pizza.GetTopping1Name();
+            //Topping2Name = await pizza.GetTopping2Name();
+            //Topping3Name = await pizza.GetTopping3Name();
+            SauceName = pizza.Sauce;
+            Topping1Name = pizza.Topping1;
+            Topping2Name = pizza.Topping2;
+            Topping3Name = pizza.Topping3;
             EatenStatus = pizza.Eaten;
             DateEaten = DateTime.Compare(pizza.DateEaten, DateTime.Parse("01/01/1901")) <= 0 ? DateTime.Today.Date : pizza.DateEaten.Date;
             Rating = pizza.Rating;
@@ -171,15 +177,27 @@ namespace DominosPizzaPicker.Client.ViewModels
                     if (Validate())
                     {
                         IsBusy = true;
-                        var pizza = await pizzaMan.GetSinglePizza(Id);
+                        var pizza = await pizzaViewMan.GetSinglePizza(Id);
                         pizza.Eaten = EatenStatus;
                         pizza.DateEaten = EatenStatus ? DateEaten : (DateTime)SqlDateTime.MinValue;
                         pizza.Rating = Rating;
-                        pizza.Comment = Comment;
+                        pizza.Comment = Comment.Trim();
                         await pizzaMan.SavePizzaAsync(pizza);
+
+                        if (pizza.Eaten)
+                        {
+                            CachedData.AddToEatenPizzaCache(pizza);
+                        }
+                        else
+                        {
+                            //CachedData.EatenPizzaCache.Clear();
+                            //CachedData.EatenPizzaCache = await pizzaMan.GetRecentAsync();
+                            await CachedData.RemoveFromEatenPizzaCache(pizza);
+                        }
+
                         MessagingCenter.Send(this, nameof(Messages.SuccessfulUpdate));
-                        //Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
                         IsBusy = false;
+                        RefreshCommand.Execute(null);
                     }
                 },
                 canExecute: () =>
@@ -188,16 +206,19 @@ namespace DominosPizzaPicker.Client.ViewModels
                 });
 
             Commands.AddRange(new Command [] { RefreshCommand, UpdateCommand });
+
+            // any commands in this dictionary will have ChangeCanExecute run when a property in the Value list is changed
+            CommandCanExecuteProperties.Add(UpdateCommand, new List<string>() { nameof(IsValid), nameof(IsBusy) });
         }
 
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
         {
             base.OnViewModelPropertyChanged(e);
 
-            if (e.PropertyName == nameof(IsValid))
-            {
-                (UpdateCommand as Command).ChangeCanExecute();
-            }
+            //if (e.PropertyName == nameof(IsValid))
+            //{
+            //    UpdateCommand.ChangeCanExecute();
+            //}
         }
 
         #endregion
