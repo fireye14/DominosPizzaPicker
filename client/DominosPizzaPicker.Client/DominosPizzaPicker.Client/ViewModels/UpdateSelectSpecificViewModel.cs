@@ -17,7 +17,7 @@ namespace DominosPizzaPicker.Client.ViewModels
     public class UpdateSelectSpecificViewModel : CustomViewModel
     {
         #region Fields
-        private Dictionary<int, Func<bool>> TabFunctions;
+        private Dictionary<int, Action> TabFunctions;
         private SauceManager sauceMan;
         private ToppingManager toppingMan;
         private PizzaManager pizzaMan;
@@ -117,7 +117,7 @@ namespace DominosPizzaPicker.Client.ViewModels
             pizzaMan = PizzaManager.DefaultManager;
 
             // Define functions to run when a tab is selected
-            TabFunctions = new Dictionary<int, Func<bool>>
+            TabFunctions = new Dictionary<int, Action>
             {
                 {1, () => MeatTabSelected = true },
                 {2, () => NonMeatTabSelected = true }
@@ -162,21 +162,23 @@ namespace DominosPizzaPicker.Client.ViewModels
 
 
 
-            Commands.Add(TabTappedCommand);
+            Commands.AddRange(new[] { TabTappedCommand, ContinueCommand });
+            CommandCanExecuteProperties.Add(ContinueCommand, new List<string>() { nameof(SelectedTopping), nameof(SelectedSauce) });
         }
 
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
         {
+            
             if (e.PropertyName == nameof(SelectedTopping))
             {
                 OnSelectedToppingChanged();
             }
             if (e.PropertyName == nameof(SelectedSauce))
             {
-                ContinueCommand.ChangeCanExecute();
+                //ContinueCommand.ChangeCanExecute();
             }
-            
 
+            base.OnViewModelPropertyChanged(e);
         }
 
         protected override void Dispose(bool disposing)
@@ -194,7 +196,7 @@ namespace DominosPizzaPicker.Client.ViewModels
 
         public async Task<ObservableCollection<Topping>> GetToppingListAsync()
         {
-            return await toppingMan.GetToppingsAsync();
+            return await toppingMan.GetToppingsAsync(true);
         }
 
         public async Task LoadLists()
@@ -202,12 +204,12 @@ namespace DominosPizzaPicker.Client.ViewModels
             if (MeatList.Count != 0 || NonMeatList.Count != 0) return;
 
             // Sauces            
-            SauceLookup = await sauceMan.GetSaucesAsync();
+            SauceLookup = await sauceMan.GetSaucesAsync(true);
             SauceList = SauceLookup.Select(x => x.Name).ToList();
             OnPropertyChanged(nameof(SauceList));
 
             // Toppings
-            var toppingList = await toppingMan.GetToppingsAsync();
+            var toppingList = await toppingMan.GetToppingsAsync(true);
             foreach (var t in toppingList)
             {
                 var nt = new NamedTopping { Id = t.Id, Name = t.Name.Trim(), IsSelected = false, ToppingEnabled = true, IsMeat = t.IsMeat };
@@ -242,7 +244,7 @@ namespace DominosPizzaPicker.Client.ViewModels
                 }
 
                 // update continue command 
-                ContinueCommand.ChangeCanExecute();
+                //ContinueCommand.ChangeCanExecute();
             }
         }
 

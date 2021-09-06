@@ -19,7 +19,7 @@
         </StackLayout>
         <!-- Sauce Picker -->
         <StackLayout Grid.Row="1">
-            <Picker Title="Select A Sauce" ItemsSource="{Binding SauceList}" SelectedItem="{Binding SelectedSauce, Mode=TwoWay}" HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="#115285"/>
+            <Picker Title="Select A Sauce"  TextColor="Black" ItemsSource="{Binding SauceList}" SelectedItem="{Binding SelectedSauce, Mode=TwoWay}" HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black"/>
         </StackLayout>
         <!-- Topping Picker -->
         <Grid Grid.Row="2" RowSpacing="0" ColumnSpacing="8">
@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!-- Meats Tab -->
-            <Button Text="Meats" Grid.Row="0" Grid.Column="0" Command="{Binding TabTappedCommand}" CommandParameter="1" VerticalOptions="Center" BackgroundColor="#5FACE8" TextColor="Black">
+            <Button Text="Meats" Grid.Row="0" Grid.Column="0" Command="{Binding TabTappedCommand}" CommandParameter="1" VerticalOptions="Center" BackgroundColor="#5FACE8" TextColor="Black" CornerRadius="0">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding MeatTabSelected}" Value="True">
                         <Setter Property="BackgroundColor" Value="#115285"/>
@@ -42,7 +42,7 @@
                 </Button.Triggers>
             </Button>
             <!-- Non Meats Tab -->
-            <Button Text="Non-Meats" Grid.Row="0" Grid.Column="1" Command="{Binding TabTappedCommand}" CommandParameter="2" VerticalOptions="Center" BackgroundColor="#5FACE8" TextColor="Black">
+            <Button Text="Non-Meats" Grid.Row="0" Grid.Column="1" Command="{Binding TabTappedCommand}" CommandParameter="2" VerticalOptions="Center" BackgroundColor="#5FACE8" TextColor="Black" CornerRadius="0">
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding NonMeatTabSelected}" Value="True">
                         <Setter Property="BackgroundColor" Value="#115285"/>
@@ -61,7 +61,7 @@
                                     <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding ToppingEnabled}" Color="#115285" VerticalOptions="CenterAndExpand"/>
                                 </StackLayout>
                                 <StackLayout Padding="10,5">
-                                    <Label Text="{Binding Name}" FontSize="18" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding Name}" FontSize="18" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>
@@ -75,10 +75,10 @@
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Padding="5,5">
-                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Color="#115285" VerticalOptions="CenterAndExpand"/>
+                                    <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding ToppingEnabled}" Color="#115285" VerticalOptions="CenterAndExpand"/>
                                 </StackLayout>
                                 <StackLayout Padding="10,5">
-                                    <Label Text="{Binding Name}" FontSize="18" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding Name}" FontSize="18" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>
