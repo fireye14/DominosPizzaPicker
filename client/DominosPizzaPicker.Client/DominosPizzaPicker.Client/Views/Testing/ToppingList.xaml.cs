@@ -50,7 +50,7 @@ namespace DominosPizzaPicker.Client
 
         private async Task RefreshItems(bool showActivityIndicator, bool syncItems)
         {
-            using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
+            using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator, 1000))
             {
                 toppingList.ItemsSource = await manager.GetToppingsAsync(syncItems);
             }

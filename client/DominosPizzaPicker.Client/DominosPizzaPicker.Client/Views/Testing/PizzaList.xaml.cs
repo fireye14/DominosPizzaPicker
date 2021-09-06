@@ -34,9 +34,9 @@ namespace DominosPizzaPicker.Client
 
         private async Task RefreshItems(bool showActivityIndicator, bool syncItems)
         {
-            using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
+            using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator, 1000))
             {
-                pizzaList.ItemsSource = await manager.GetPizzasAsync(syncItems);
+                pizzaList.ItemsSource = await manager.GetAllPizzasAsync(syncItems);
             }
         }
 
