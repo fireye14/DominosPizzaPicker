@@ -19,12 +19,16 @@ namespace DominosPizzaPicker.Backend.Models
         public DbSet<Sauce> Sauces { get; set; }
         public DbSet<Topping> Toppings { get; set; }
         public DbSet<Pizza> Pizzas { get; set; }
+        public DbSet<PizzaView> PizzaView { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Add(
                 new AttributeToColumnAnnotationConvention<TableColumnAttribute, string>(
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
+
+            // Manually set table name instead of adding s to the end of it
+            modelBuilder.Entity<PizzaView>().ToTable("PizzaView");
         }
     }
 }

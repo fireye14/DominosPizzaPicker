@@ -149,10 +149,12 @@
   <ItemGroup>
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\PizzaController.cs" />
+    <Compile Include="Controllers\PizzaViewController.cs" />
     <Compile Include="Controllers\SauceController.cs" />
     <Compile Include="Controllers\ToppingController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\Pizza.cs" />
+    <Compile Include="DataObjects\PizzaView.cs" />
     <Compile Include="DataObjects\Sauce.cs" />
     <Compile Include="DataObjects\Topping.cs" />
     <Compile Include="Migrations\202001290306225_InitialCreate.cs" />
