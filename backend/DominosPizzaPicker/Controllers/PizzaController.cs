@@ -18,12 +18,13 @@ namespace DominosPizzaPicker.Backend.Controllers
         {
             base.Initialize(controllerContext);
             DominosPizzaPickerContext context = new DominosPizzaPickerContext();
-            DomainManager = new EntityDomainManager<Pizza>(context, Request);
+            DomainManager = new EntityDomainManager<Pizza>(context, Request);            
         }
 
         // GET tables/Pizza
+        [EnableQuery(PageSize = 1000)]
         public IQueryable<Pizza> GetAllPizzas()
-        {
+        {            
             return Query();
         }
 
