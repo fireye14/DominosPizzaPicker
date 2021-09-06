@@ -9,6 +9,8 @@ namespace DominosPizzaPicker.Client.Models
 
         public string Name { get; set; }
 
+        public bool Used { get; set; }
+
         // If need to have different name than database column, do this ('text' is table column name)
         //string name;
         //[JsonProperty(PropertyName = "text")]

@@ -10,5 +10,6 @@ namespace DominosPizzaPicker.Backend.DataObjects
     public class Sauce : EntityData
     {        
         public string Name { get; set; }
+        public bool Used { get; set; }
     }
 }

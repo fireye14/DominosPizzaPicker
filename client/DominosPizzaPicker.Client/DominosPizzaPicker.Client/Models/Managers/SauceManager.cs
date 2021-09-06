@@ -35,6 +35,13 @@ namespace DominosPizzaPicker.Client.Models.Managers
 
         private SauceManager()
         {
+            SetConnection();
+        }
+
+        #region Methods
+
+        public void SetConnection()
+        {
             this.client = new MobileServiceClient(Constants.ApplicationURL);
 
 #if OFFLINE_SYNC_ENABLED
@@ -50,18 +57,22 @@ namespace DominosPizzaPicker.Client.Models.Managers
 #endif
         }
 
-        #region Methods
-        public async Task<ObservableCollection<Sauce>> GetSaucesAsync(bool syncItems = false)
+
+        public async Task<ObservableCollection<Sauce>> GetSaucesAsync(bool usedOnly = false, bool syncItems = false)
         {
             try
             {
 #if OFFLINE_SYNC_ENABLED
-                if (syncItems)
-                {
-                    await this.SyncAsync();
-                }
+                        if (syncItems)
+                        {
+                            await this.SyncAsync();
+                        }
 #endif
-                IEnumerable<Sauce> sauces = await sauceTable.OrderBy(x =>x.Name).ToEnumerableAsync();
+                IEnumerable<Sauce> sauces;
+                if (usedOnly)
+                    sauces = await sauceTable.Where(x => x.Used).OrderBy(x =>x.Name).ToEnumerableAsync();
+                else
+                    sauces = await sauceTable.OrderBy(x => x.Name).ToEnumerableAsync();
 
                 return new ObservableCollection<Sauce>(sauces);
             }
@@ -75,6 +86,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
             }
             return null;
         }
+
 
         public async Task<Sauce> GetSauce(string Id, bool syncItems = false)
         {

@@ -23,19 +23,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
 
         private ToppingManager()
         {
-            this.client = new MobileServiceClient(Constants.ApplicationURL);
-
-#if OFFLINE_SYNC_ENABLED
-            var store = new MobileServiceSQLiteStore(offlineDbPath);
-            store.DefineTable<TodoItem>();
-
-            //Initializes the SyncContext using the default IMobileServiceSyncHandler.
-            this.client.SyncContext.InitializeAsync(store);
-
-            toppingTable = client.GetSyncTable<Topping>();
-#else
-            toppingTable = client.GetTable<Topping>();
-#endif
+            SetConnection();
         }
 
 
@@ -51,17 +39,40 @@ namespace DominosPizzaPicker.Client.Models.Managers
             }
         }
 
-        public async Task<ObservableCollection<Topping>> GetToppingsAsync(bool syncItems = false)
+
+        public void SetConnection()
+        {
+            this.client = new MobileServiceClient(Constants.ApplicationURL);
+
+#if OFFLINE_SYNC_ENABLED
+            var store = new MobileServiceSQLiteStore(offlineDbPath);
+            store.DefineTable<TodoItem>();
+
+            //Initializes the SyncContext using the default IMobileServiceSyncHandler.
+            this.client.SyncContext.InitializeAsync(store);
+
+            toppingTable = client.GetSyncTable<Topping>();
+#else
+            toppingTable = client.GetTable<Topping>();
+#endif
+        }
+
+        public async Task<ObservableCollection<Topping>> GetToppingsAsync(bool usedOnly = false, bool syncItems = false)
         {
             try
             {
 #if OFFLINE_SYNC_ENABLED
-                if (syncItems)
-                {
-                    await this.SyncAsync();
-                }
+                        if (syncItems)
+                        {
+                            await this.SyncAsync();
+                        }
 #endif
-                IEnumerable<Topping> toppings = await toppingTable.OrderBy(x => x.Name).ToEnumerableAsync();
+                IEnumerable<Topping> toppings;
+                // for some god damn reason, you can't use a (true ? a : b) operator in a where clause? 
+                if(usedOnly)
+                    toppings = await toppingTable.Where(x => x.Used).OrderBy(x => x.Name).ToEnumerableAsync();
+                else
+                    toppings = await toppingTable.OrderBy(x => x.Name).ToEnumerableAsync();
 
                 return new ObservableCollection<Topping>(toppings);
             }
@@ -96,5 +107,6 @@ namespace DominosPizzaPicker.Client.Models.Managers
             }
             return null;
         }
+
     }
 }
