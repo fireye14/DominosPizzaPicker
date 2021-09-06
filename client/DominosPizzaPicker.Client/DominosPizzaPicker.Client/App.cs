@@ -14,7 +14,9 @@ namespace DominosPizzaPicker.Client
             //MainPage = new SauceList();
             //MainPage = new ToppingList();
             //MainPage = new PizzaList();
-            MainPage = new NavigationPage(new MainMenu());
+            //MainPage = new NavigationPage(new MainMenu());
+            //MainPage = new NavigationPage(new SplashLoading());
+            MainPage = new SplashLoading();
         }
 
         protected override void OnStart()
