@@ -7,6 +7,6 @@
     <bitmap
         android:src="@mipmap/pizza_splash"
         android:tileMode="disabled"
-        android:gravity="center"/>
+        android:gravity="center" />
   </item>
 </layer-list>

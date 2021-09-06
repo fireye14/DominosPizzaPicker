@@ -25,34 +25,41 @@ namespace DominosPizzaPicker.Client.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            // Initialize Azure Mobile Apps
-            CurrentPlatform.Init();
+            //// Initialize Azure Mobile Apps
+            //CurrentPlatform.Init();
 
-            // Initialize Xamarin Forms
-            Forms.Init(this, savedInstanceState);
+            //// Initialize Xamarin Forms
+            //Forms.Init(this, savedInstanceState);
 
-            // Set local db if in emulator
-            var IsEmulator = Build.Fingerprint.Contains("vbox") || Build.Fingerprint.Contains("generic");
-            //IsEmulator = false;
-            Constants.ApplicationURL = IsEmulator ? @"http://10.0.2.2/DominosPizzaPicker/" : @"https://dominospizzapicker.azurewebsites.net";
+            //// Set local db if in emulator
+            //var IsEmulator = Build.Fingerprint.Contains("vbox") || Build.Fingerprint.Contains("generic");
+            ////IsEmulator = false;
 
-            Task startupWork = new Task(() => { SimulateStartup(); });
-            startupWork.Start();
+            //// mwj test to use local iis instead of azure
+            ////Constants.ApplicationURL = IsEmulator ? @"http://10.0.2.2/DominosPizzaPicker/" : @"https://dominospizzapicker.azurewebsites.net";
+            //Constants.ApplicationURL = IsEmulator ? @"http://10.0.2.2/DominosPizzaPicker/" : @"http://192.168.1.13/DominosPizzaPicker/";
+            ////Constants.ApplicationURL = IsEmulator ? @"http://10.0.2.2/DominosPizzaPicker/" : @"https://dominospizzapicker-backend.conveyor.cloud/DominosPizzaPicker/";
+            //// eom
 
+
+            //await SimulateStartup();
             StartActivity(new Intent(Android.App.Application.Context, typeof(MainActivity)));
+
         }
 
         // Do nothing when back pressed
         public override void OnBackPressed() { }
 
         // Simulates background work that happens behind the splash screen
-        public async void SimulateStartup()
-        {            
-            var pizzaMan = PizzaManager.DefaultManager;
+        public async Task SimulateStartup()
+        {
+            var pizzaViewMan = PizzaViewManager.DefaultManager;
 
-            // this will ensure that all tables are hit - not sure if that makes a difference
-            var p = await pizzaMan.GetRandomUneatenPizza();
-            await p.ToStringAsync();
+            //// this will ensure that all tables are hit - not sure if that makes a difference
+            //var p = await pizzaMan.GetRandomUneatenPizza();
+            //await p.ToStringAsync();
+            CachedData.RecentEatenPizzaCache.Clear();
+            CachedData.RecentEatenPizzaCache = await pizzaViewMan.GetRecentAsync();
         }
     }
 }
