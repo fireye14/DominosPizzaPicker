@@ -10,7 +10,7 @@ namespace DominosPizzaPicker.Client.Helpers
 {
     public class CustomViewModel : Disposable, INotifyPropertyChanged
     {
-        #region Properties
+        #region Properties and Backing Fields
         public ActivityIndicator ActivityIndicator { get; set; }
         public INavigation Navigation { get; set; }
 
@@ -31,6 +31,12 @@ namespace DominosPizzaPicker.Client.Helpers
         public List<Command> Commands
         {
             get { return _commands = _commands ?? new List<Command>(); }
+        }
+
+        private Dictionary<Command, List<string>> _commandCanExecuteProperties;
+        public Dictionary<Command, List<string>> CommandCanExecuteProperties
+        {
+            get { return _commandCanExecuteProperties = _commandCanExecuteProperties ?? new Dictionary<Command, List<string>>(); }
         }
 
         // Result of most recent validation
@@ -65,6 +71,41 @@ namespace DominosPizzaPicker.Client.Helpers
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // TODO: add a bool property something like "EnablePropertyChangedEvent" that removes this event handler from PropertyChanged if set to false and readds it when set to true
+            // this will ensure that the property changed event will not be triggered when already inside a property changed event call
+            // also gives some flexibility for individual view models
+
+            //        private bool EnablePropertyChangedEvent
+            //        {
+            //          set
+            //          {
+            //              if (this.CurrentTransactionHeader == null)
+            //                  return;
+            //              this.CurrentTransactionHeader.PropertyChanged -= new PropertyChangedEventHandler(this.CurrentTransactionHeader_PropertyChanged);
+            //              if (!value)
+            //                  return;
+            //              this.CurrentTransactionHeader.PropertyChanged += new PropertyChangedEventHandler(this.CurrentTransactionHeader_PropertyChanged);
+            //          }
+            //        }
+
+
+            //try
+            //{
+            //    if (this.CurrentTransactionHeader == null)
+            //        return;
+            //    this.EnablePropertyChangedEvent = false;
+            //    this.OnCurrentTransactionHeaderPropertyChanged(e);
+            //}
+            //catch (Exception ex)
+            //{
+            //    ClientContext.HandleError(ex, (Control)this);
+            //}
+            //finally
+            //{
+            //    this.EnablePropertyChangedEvent = true;
+            //}
+
+
             try
             {
                 OnViewModelPropertyChanged(e);
@@ -137,6 +178,12 @@ namespace DominosPizzaPicker.Client.Helpers
                 {
                     c.ChangeCanExecute();
                 }
+            }
+
+            foreach (var c in CommandCanExecuteProperties)
+            {
+                if (c.Value.Contains(e.PropertyName))
+                    c.Key.ChangeCanExecute();
             }
         }
 

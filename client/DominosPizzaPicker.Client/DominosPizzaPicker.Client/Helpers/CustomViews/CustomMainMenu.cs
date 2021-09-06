@@ -14,7 +14,9 @@ namespace DominosPizzaPicker.Client.Helpers.CustomViews
     {
         // use single command to navigate to any available page from main menu
         // include the following in button xaml: Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:<type of view to navigate to>}"
-        public ICommand NavigateCommand { get; private set; }
+        public Command NavigateCommand { get; private set; }
+
+        public new bool IsBusy { get; set; }
 
         public CustomMainMenu()
         {
@@ -26,12 +28,25 @@ namespace DominosPizzaPicker.Client.Helpers.CustomViews
             catch { }
 
             NavigateCommand = new Command<Type>(
-                async (Type pageType) =>
+                execute: async (Type pageType) =>
                 {
                     await Navigation.PushAsync((Page)Activator.CreateInstance(pageType));
+                },
+                canExecute: (Type a) =>
+                {
+                    return !IsBusy;
                 });
 
             BindingContext = this;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // remove extended splash screen from navigation stack if it exists
+            while (Navigation.NavigationStack[0] != null && Navigation.NavigationStack[0].GetType() != GetType())
+                Navigation.RemovePage(Navigation.NavigationStack[0]);
         }
     }
 }

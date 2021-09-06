@@ -31,14 +31,20 @@ namespace DominosPizzaPicker.Client.Helpers
             }
         }
 
-        public ActivityIndicatorScope(ActivityIndicator indicator, bool showIndicator)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="indicator">the ActivityIndicator object</param>
+        /// <param name="showIndicator">true to show the indicator, false to do nothing</param>
+        /// <param name="indicatorDelay">minimum amount of time, in ms, that the indicator will be shown for</param>
+        public ActivityIndicatorScope(ActivityIndicator indicator, bool showIndicator, int indicatorDelayMs)
         {
             this.indicator = indicator;
             this.showIndicator = showIndicator;
 
             if (showIndicator)
             {
-                indicatorDelay = Task.Delay(1000);
+                indicatorDelay = Task.Delay(indicatorDelayMs);
                 IndicatorActivity = true;
             }
             else
