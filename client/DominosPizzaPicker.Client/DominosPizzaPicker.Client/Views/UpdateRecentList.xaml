@@ -40,14 +40,14 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="5*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0" Text="Sauce: " HorizontalOptions="EndAndExpand" FontAttributes="Bold"/>
-                                    <Label Grid.Row="1" Grid.Column="0" Text="Toppings: " HorizontalOptions="EndAndExpand" FontAttributes="Bold"/>
-                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding SauceName}"/>
-                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Topping1Name}"/>
-                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Topping2Name}"/>
-                                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Topping3Name}"/>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="S: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="T: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding SauceName}" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Topping1Name}" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Topping2Name}" TextColor="Black"/>
+                                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Topping3Name}" TextColor="Black"/>
                                 </Grid>
                                 <Grid Grid.Column="1" ColumnSpacing="0" Padding="0,5,5,5">
                                     <Grid.RowDefinitions>
@@ -58,14 +58,14 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="5*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0" Text="Eaten: " HorizontalOptions="EndAndExpand" FontAttributes="Bold"/>
-                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding DateEatenText}"/>
-                                    <Label Grid.Row="1" Grid.Column="0" Text="Rating: " HorizontalOptions="EndAndExpand" FontAttributes="Bold"/>
-                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding RatingText}"/>
-                                    <Label Grid.Row="2" Grid.Column="0" Text="Comment: " HorizontalOptions="EndAndExpand" FontAttributes="Bold"/>
-                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding CommentText}" MaxLines="2"/>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="E: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding DateEatenText}" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="R: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding RatingText}" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="0" Text="C: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding CommentText}" MaxLines="3" TextColor="Black"/>
                                 </Grid>
                             </Grid>
                         </Grid>

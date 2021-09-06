@@ -18,10 +18,11 @@ namespace DominosPizzaPicker.Client.ViewModels
     public class UpdateRecentListViewModel : CustomViewModel
     {
         #region Fields
-        PizzaManager pizzaMan;
+        PizzaViewManager pizzaViewMan;
         // for some reason, background colors appear on top of the tap animation. make semi-transparent to be able to see it sort of
         Color evenColor = Color.White.MultiplyAlpha(0.7);
-        Color oddColor = Color.FromHex("#3F51B5").MultiplyAlpha(0.7);
+        Color oddColor = Color.FromHex("#3F51B5");
+        Color needsUpdate = Color.FromHex("#B53F3F");
         #endregion
 
 
@@ -41,7 +42,7 @@ namespace DominosPizzaPicker.Client.ViewModels
         #region Constructor
         public UpdateRecentListViewModel()
         {
-            pizzaMan = PizzaManager.DefaultManager;
+            pizzaViewMan = PizzaViewManager.DefaultManager;
             PizzaList = new ObservableCollection<NamedPizza>();
         }
         #endregion
@@ -49,21 +50,25 @@ namespace DominosPizzaPicker.Client.ViewModels
         #region Methods
 
         /// <summary>
-        /// Get the 20 most recently eaten pizzas withe no rating and/or comment
+        /// Get most recently eaten pizzas 
         /// </summary>
-        public async Task LoadList()
+        public void LoadList()
         {
+            if (CachedData.RecentEatenPizzaCache == null || CachedData.RecentEatenPizzaCache.Count == 0)
+                return;
+
             // init token source and token
             Cancellation.Init();
 
             try
             {
-                using (var scope = new ActivityIndicatorScope(ActivityIndicator, showIndicator: true))
+                using (var scope = new ActivityIndicatorScope(ActivityIndicator, showIndicator: true, indicatorDelayMs: 500))
                 {
                     PizzaList.Clear();
-                    var pizzaList = await pizzaMan.GetRecentAsync(20);
+                    //var pizzaList = await pizzaViewMan.GetRecentAsync();
+                    //var pizzaList = CachedData.RecentEatenPizzaCache;
 
-                    foreach (var p in pizzaList)
+                    foreach (var p in CachedData.RecentEatenPizzaCache)
                     {
 
                         // For below, checking if cancel requested then breaking would probably be better (commented out code) than throwing an exception, but it only works if in a loop, so get used to the try/catch/finally pattern
@@ -80,14 +85,18 @@ namespace DominosPizzaPicker.Client.ViewModels
                         PizzaList.Add(new NamedPizza
                         {
                             Id = p.Id,
-                            SauceName = await p.GetSauceName(),
-                            Topping1Name = await p.GetTopping1Name(),
-                            Topping2Name = await p.GetTopping2Name(),
-                            Topping3Name = await p.GetTopping3Name(),
+                            //SauceName = await p.GetSauceName(),
+                            //Topping1Name = await p.GetTopping1Name(),
+                            //Topping2Name = await p.GetTopping2Name(),
+                            //Topping3Name = await p.GetTopping3Name(),
+                            SauceName = p.Sauce,
+                            Topping1Name = p.Topping1,
+                            Topping2Name = p.Topping2,
+                            Topping3Name = p.Topping3,
                             DateEatenText = p.DateEaten.Date.ToString("M/d/yy"),
                             RatingText = p.Rating == 0 ? "No Rating" : p.Rating.ToString(),
                             CommentText = string.IsNullOrEmpty(p.Comment) ? "No Comment" : p.Comment,
-                            RowColor = PizzaList.Count % 2 == 0 ? evenColor : oddColor
+                            RowColor = p.Rating == 0 || string.IsNullOrEmpty(p.Comment) ? needsUpdate : (PizzaList.Count % 2 == 0 ? evenColor : oddColor)
                         });
                     }
                 }

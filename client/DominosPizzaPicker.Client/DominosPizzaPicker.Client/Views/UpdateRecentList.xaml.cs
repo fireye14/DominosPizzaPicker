@@ -29,10 +29,10 @@ namespace DominosPizzaPicker.Client.Views
 
         #region Methods
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-            await ViewModel.LoadList();
+            ViewModel.LoadList();
         }
 
         #endregion
