@@ -19,6 +19,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
         IMobileServiceSyncTable<Pizza> pizzaTable;
 #else
         IMobileServiceTable<Pizza> pizzaTable;
+        IMobileServiceTable<PizzaView> pizzaViewTable;
 #endif
         #endregion
 
@@ -39,6 +40,14 @@ namespace DominosPizzaPicker.Client.Models.Managers
         #region Constructor
         private PizzaManager()
         {
+            SetConnection();
+        }
+        #endregion
+
+        #region Methods
+
+        public void SetConnection()
+        {
             this.client = new MobileServiceClient(Constants.ApplicationURL);
 
 #if OFFLINE_SYNC_ENABLED
@@ -51,12 +60,11 @@ namespace DominosPizzaPicker.Client.Models.Managers
             pizzaTable = client.GetSyncTable<Pizza>();
 #else
             pizzaTable = client.GetTable<Pizza>();
+            pizzaViewTable = client.GetTable<PizzaView>();
 #endif
         }
-        #endregion
 
-        #region Methods
-        public async Task<ObservableCollection<Pizza>> GetPizzasAsync(bool syncItems = false)
+        public async Task<ObservableCollection<Pizza>> GetAllPizzasAsync(bool syncItems = false)
         {
             try
             {
@@ -67,10 +75,23 @@ namespace DominosPizzaPicker.Client.Models.Managers
                 }
 #endif
 
-                IEnumerable<Pizza> pizzas = await pizzaTable.ToEnumerableAsync();
+                //var test = await pizzaTable.ToEnumerableAsync().Result
+                //IEnumerable<Pizza> pizzas = await pizzaTable.Take(10120).ToEnumerableAsync();
+                //var pizzas = await pizzaTable.Take(500).Where(x => true).ToListAsync();
 
-                return new ObservableCollection<Pizza>(pizzas);
-          
+                var totalCount = Convert.ToInt16(((IQueryResultEnumerable<Pizza>)await pizzaTable.Take(0).IncludeTotalCount().ToEnumerableAsync()).TotalCount);
+                var pageSize = 1000;
+                var pizzaList = new List<Pizza>();
+                for (var i = 0; i < totalCount; i = pizzaList.Count)
+                {
+                    var pizzas = await pizzaTable.Skip(i).Take(pageSize).ToEnumerableAsync();
+                    pizzaList.AddRange(pizzas);
+                }
+
+
+                return new ObservableCollection<Pizza>(pizzaList);
+                //return new ObservableCollection<Pizza>(pizzas);
+
             }
             catch (MobileServiceInvalidOperationException msioe)
             {
@@ -96,6 +117,32 @@ namespace DominosPizzaPicker.Client.Models.Managers
                 else
                 {
                     await pizzaTable.UpdateAsync(pizza);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Save error: {0}", new[] { e.Message });
+            }
+        }
+
+        // PizzaView param
+        public async Task SavePizzaAsync(PizzaView pizza)
+        {
+            try
+            {
+                var p = await GetSinglePizza(pizza.Id);
+                p.Eaten = pizza.Eaten;
+                p.DateEaten = pizza.DateEaten;
+                p.Rating = pizza.Rating;
+                p.Comment = pizza.Comment;
+
+                if (p.Id == null)
+                {
+                    await pizzaTable.InsertAsync(p);
+                }
+                else
+                {
+                    await pizzaTable.UpdateAsync(p);
                 }
             }
             catch (Exception e)
@@ -132,16 +179,17 @@ namespace DominosPizzaPicker.Client.Models.Managers
         public async Task<long> GetUneatenPizzaCount()
         {
             // Take(0) ensures no actual records are returned     
-            return ((IQueryResultEnumerable<Pizza>)await pizzaTable.Take(0).Where(x => !x.Eaten).IncludeTotalCount().ToEnumerableAsync()).TotalCount; 
+            return ((IQueryResultEnumerable<Pizza>)await pizzaTable.Take(0).Where(x => !x.Eaten).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
         }
 
-        public async Task<ObservableCollection<Pizza>> GetRecentAsync(int count, bool syncItems = false)
+        public async Task<ObservableCollection<Pizza>> GetRecentAsync(bool syncItems = false)
         {
             try
             {
                 // get up to 10 pizzas that are eaten but don't have either rating or comment entered
                 //IEnumerable<Pizza> pizzas = await pizzaTable.Take(count).Where(x => x.Eaten && (x.Rating == 0 || x.Comment == string.Empty)).OrderByDescending(x => x.DateEaten).ToEnumerableAsync();
-                IEnumerable<Pizza> pizzas = await pizzaTable.Take(count).Where(x => x.Eaten).OrderByDescending(x => x.DateEaten).ToEnumerableAsync();
+                //var t = pizzaTable.Take(Constants.RecentEatenListCount);
+                IEnumerable<Pizza> pizzas = await pizzaTable.Take(Constants.RecentEatenListCount).Where(x => x.Eaten).OrderByDescending(x => x.DateEaten).ThenByDescending(x => x.Version).ToEnumerableAsync();
 
                 return new ObservableCollection<Pizza>(pizzas);
             }
@@ -179,6 +227,33 @@ namespace DominosPizzaPicker.Client.Models.Managers
             catch (Exception e)
             {
                 Debug.WriteLine("Save error: {0}", new[] { e.Message });
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Called after a pizza is changed from eaten to not eaten; need to update the cache with a new pizza
+        /// </summary>
+        public async Task<Pizza> GetReplacementPizzaForCache()
+        {
+            try
+            {
+                var eatenCount = ((IQueryResultEnumerable<Pizza>)await pizzaTable.Take(0).Where(x => x.Eaten).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
+                if (eatenCount < Constants.RecentEatenListCount)
+                    return null;
+
+                // Get the last pizza in the list to replace the one that was removed prior to this
+                var pizza = await pizzaTable.Skip(Constants.RecentEatenListCount - 1).Take(1).Where(x => x.Eaten).OrderByDescending(x => x.DateEaten).ThenByDescending(x => x.Version).ToEnumerableAsync();
+
+                return pizza.FirstOrDefault();
+            }
+            catch (MobileServiceInvalidOperationException msioe)
+            {
+                Debug.WriteLine("Invalid sync operation: {0}", new[] { msioe.Message });
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Sync error: {0}", new[] { e.Message });
             }
             return null;
         }

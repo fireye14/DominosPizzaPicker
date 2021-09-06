@@ -16,7 +16,25 @@ namespace DominosPizzaPicker.Client.Models
         public string Topping2Id { get; set; }
         public string Topping3Id { get; set; }
         public bool Eaten { get; set; }
-        public DateTime DateEaten { get; set; }
+
+        // when setting this property, make sure the time is set to UTC
+        // for some reason, when this object is mapped back to the Backend, it automatically converts to UTC, but then when retrieving the data, it never gets converted back
+        // set the Kind to UTC here so that no automatic conversion happens
+        private DateTime _dateEaten;
+        public DateTime DateEaten
+        {
+            get { return _dateEaten; }
+            set
+            {
+                if (value.Kind == DateTimeKind.Utc)
+                    _dateEaten = value;
+                else
+                {
+                    _dateEaten = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second, DateTimeKind.Utc);
+                }
+            }
+        }
+
         public float Rating { get; set; }
         public string Comment { get; set; }
 
