@@ -1,0 +1,63 @@
+on app start, check if database file exists
+if it doesn't, create it, create tables, seed data
+
+	- can i do this process the same on android and ios??
+	
+this app won't have a remote server for storing data, so don't need to worry about that stuff
+	- i have my own for personal use that i can update manually at any time
+	
+	- but something i COULD do if an app needed this: 
+		check device app version against updated version; if device is not up to date, make user update or else can't continue
+			- not exactly sure how to do this but maybe something with assembly info file? dll version?
+		that way if there were any schema changes, the app is always communicating with the most recent schema on the remote server
+		
+		
+check PRAGMA user_version on the local SQLite db
+	- if it isn't the newest version (due to a schema update or otherwise), run the update and increment/change PRAGMA user_version to the new one
+	- the update should be cumulative like the PPG tsmx files... meaning that running the version 5 update will be compatible with all versions 1-4
+		- could do this by using EXISTS and check schemas and stuff i think
+		- if this is not possible, i would need to do it so there are separate 1to2, 2to3, 3to4, 4to5 updates
+		
+	- for my app, this most likely wouldn't be needed unless dominos adds a topping
+	
+	- but maybe not idk
+		
+
+then the SQLite db on the device is up to date
+use SQLite db for all data
+	- currently have it setup to use Azure tables and junk. technically wouldn't need this for the new way I'm going about this, but still allows for syncing between app and remote SQL server
+	
+	- would still work to use the Azure offline sync tables, just never run the Sync methods
+		- need to do a bit more research here
+		
+	- would have a special version of the app just for me that could utilize the sync stuff
+	
+	- maybe have a process that restores local data from remote server data
+		- on ACTUAL app, have a process that saves the db file to google play store or something, then restores from that backup? not sure if google play has something built-in for that
+		- apparently there is something
+		
+	- possible to run a query like my PizzaView? save a query to the db and run that query when i need the view data?
+	- would it be more efficient to run the view? or since switching to using local SQLite db, maybe it would be okay to just run that query every time?
+	
+	- could still do the same caching for the recent 20 pizzas, but might not be much faster
+	
+	
+UPDATED 7/17/20 process: outline on how new pizzas should be added to the pizza table
+general rule would be that all combinations should be present in the table regardless of if Used = 1 or not in the respective sauce/topping table
+the only thing is that a pizza would not be shown in the generate random if Used = 0 for any of them	
+- if i was doing this with SQLite only on the phone itself...
+		- check the PRAGMA user version or whatever, if not current (current value would be a const var in the c# code, user version would be version stored in DB file), run the update process
+			
+		- update process would include looping through and running functions similar to below, then run the final loop (same as original in current console app) and only add to INSERT statement if one of the pizza elements is on the current loop pizza
+			
+		similar to the TabFunctions in UpdateSelectSpecificViewModel in Client solution
+			
+		var AddToListMethods = new Dictionary<int, Action> { {1, () => AddToListsV1()} }
+		void AddToListsV1()
+		{
+			add v1 new sauces to NewSaucesList
+			add v1 new toppings to NewToppingsList
+		}
+			
+		- should run only one INSERT statement and the above loop would only concatentate a string that gets put onto an INSERT statement
+			- if this is possible... might not be due to limitations of string variable size	

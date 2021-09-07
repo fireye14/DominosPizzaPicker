@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:CustomContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
+             xmlns:vm="clr-namespace:DominosPizzaPicker.Client.ViewModels"
+             x:TypeArguments="vm:UpdateRecentListViewModel"
+             x:Class="DominosPizzaPicker.Client.Views.UpdateRecentList"
+             Title=""
+             BackgroundColor="#3F51B5">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackLayout Grid.Row="0" HorizontalOptions="CenterAndExpand">
+            <Button x:Name="btnUpdate" Text="Update Another Pizza" Command="{Binding UpdateAnotherPizzaCommand}" Font="Large" BorderWidth="1" Margin="15,15,15,10"/>
+            <Label Text="Recently Eaten Pizzas" FontSize="Large" TextColor="Black" HorizontalOptions="CenterAndExpand" Margin="0,10,0,10"/>
+        </StackLayout>
+        <ListView x:Name="pizzaList" Grid.Row="1" ItemsSource="{Binding PizzaList}" SelectedItem="{Binding SelectedPizza, Mode=TwoWay}" SelectionMode="Single" VerticalOptions="FillAndExpand" HasUnevenRows="True" IsPullToRefreshEnabled="false" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <BoxView Color="{Binding RowColor}" Grid.ColumnSpan="2"></BoxView>
+                                <Grid Grid.Column="0" ColumnSpacing="0" Padding="5,5,0,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="S: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="T: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding SauceName}" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Topping1Name}" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Topping2Name}" TextColor="Black"/>
+                                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Topping3Name}" TextColor="Black"/>
+                                </Grid>
+                                <Grid Grid.Column="1" ColumnSpacing="0" Padding="0,5,5,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="E: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding DateEatenText}" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="R: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding RatingText}" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="0" Text="C: " HorizontalOptions="EndAndExpand" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding CommentText}" MaxLines="3" TextColor="Black"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ActivityIndicator x:Name="activityIndicator"
+                           Grid.RowSpan="2"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           IsVisible="False"
+                           IsEnabled="True" />
+    </Grid>
+</c:CustomContentPage>
