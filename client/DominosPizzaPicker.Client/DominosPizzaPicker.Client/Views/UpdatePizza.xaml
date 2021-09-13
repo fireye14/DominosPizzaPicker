@@ -88,7 +88,7 @@
         </Grid>
         <!-- Update Button -->
         <StackLayout Grid.Row="3" Padding="15,0,15,20">
-            <Button Text="Update" Command="{Binding UpdateCommand}" Font="Large" BorderWidth="5" HorizontalOptions="FillAndExpand"  VerticalOptions="EndAndExpand" />
+            <Button Text="Update" Command="{Binding UpdateCommand}" Font="Large" HorizontalOptions="FillAndExpand"  VerticalOptions="EndAndExpand" />
         </StackLayout>
     </Grid>
     <!--</ScrollView>-->

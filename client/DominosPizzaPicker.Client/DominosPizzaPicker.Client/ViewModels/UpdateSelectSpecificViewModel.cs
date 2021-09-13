@@ -108,7 +108,7 @@ namespace DominosPizzaPicker.Client.ViewModels
         #region Constructor
 
         public UpdateSelectSpecificViewModel()
-        {           
+        {
 
             MeatTabSelected = true;
 
@@ -148,27 +148,29 @@ namespace DominosPizzaPicker.Client.ViewModels
             ContinueCommand = new Command(
                 execute: async () =>
                 {
+                    IsBusy = true;
                     var toppingList = new List<string>();
                     toppingList.AddRange(MeatList.Where(x => x.IsSelected).Select(x => x.Id));
-                    toppingList.AddRange(NonMeatList.Where(x => x.IsSelected).Select(x => x.Id));                    
+                    toppingList.AddRange(NonMeatList.Where(x => x.IsSelected).Select(x => x.Id));
                     var pizza = await pizzaMan.GetSinglePizza(SauceLookup.FirstOrDefault(x => x.Name == SelectedSauce).Id, toppingList);
                     await Navigation.PushAsync(new UpdatePizza(pizza.Id));
+                    IsBusy = false;
                 },
                 canExecute: () =>
                 {
-                    return SelectedToppingCount >= 3 && !string.IsNullOrEmpty(SelectedSauce);
+                    return !IsBusy && SelectedToppingCount >= 3 && !string.IsNullOrEmpty(SelectedSauce);
                 });
 
 
 
 
             Commands.AddRange(new[] { TabTappedCommand, ContinueCommand });
-            CommandCanExecuteProperties.Add(ContinueCommand, new List<string>() { nameof(SelectedTopping), nameof(SelectedSauce) });
+            CommandCanExecuteProperties.Add(ContinueCommand, new List<string>() { nameof(SelectedTopping), nameof(SelectedSauce), nameof(IsBusy) });
         }
 
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
         {
-            
+
             if (e.PropertyName == nameof(SelectedTopping))
             {
                 OnSelectedToppingChanged();

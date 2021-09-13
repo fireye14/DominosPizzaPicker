@@ -10,6 +10,7 @@ namespace DominosPizzaPicker.Client
     {
         public App()
         {
+            InitializeComponent();
             // The root page of the application
             //MainPage = new SauceList();
             //MainPage = new ToppingList();

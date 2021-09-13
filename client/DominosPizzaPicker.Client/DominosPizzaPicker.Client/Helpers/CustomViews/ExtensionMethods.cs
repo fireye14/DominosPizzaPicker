@@ -13,12 +13,12 @@ namespace DominosPizzaPicker.Client.Helpers.CustomViews
         /// Initialize a page. Called from Custom page classes
         /// </summary>
         public static void Initialize<P, V>(this P page)
-            where P : Page, ICustomPage<V> 
+            where P : Page, ICustomPage<V>
             where V : CustomViewModel
         {
             page.ViewModel = Activator.CreateInstance<V>();
             page.BindingContext = page.ViewModel;
-                        
+
             // Try to find InitializeComponent method of this object's type and invoke it.
             try
             {
@@ -30,14 +30,14 @@ namespace DominosPizzaPicker.Client.Helpers.CustomViews
         /// <summary>
         /// Subscribe a View to a sent message from its ViewModel
         /// </summary>
-        public static void Subscribe<V>(this Page page, string message, Action <V> action)
+        public static void Subscribe<V>(this Page page, string message, Action<V> action)
             where V : CustomViewModel
         {
             try
             {
                 if (action == null) return;
-                
-                MessagingCenter.Subscribe(page, message, action);                
+
+                MessagingCenter.Subscribe(page, message, action);
             }
             catch { }
         }

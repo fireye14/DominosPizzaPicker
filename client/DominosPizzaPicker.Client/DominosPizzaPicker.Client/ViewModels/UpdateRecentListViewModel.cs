@@ -18,13 +18,15 @@ namespace DominosPizzaPicker.Client.ViewModels
     public class UpdateRecentListViewModel : CustomViewModel
     {
         #region Fields
-        PizzaViewManager pizzaViewMan;
-        // for some reason, background colors appear on top of the tap animation. make semi-transparent to be able to see it sort of
-        Color evenColor = Color.White.MultiplyAlpha(0.7);
-        Color oddColor = Color.FromHex("#3F51B5");
-        Color needsUpdate = Color.FromHex("#B53F3F");
-        #endregion
 
+        PizzaViewManager pizzaViewMan;
+
+        // for some reason, background colors appear on top of the tap animation. make semi-transparent to be able to see it sort of
+        readonly Color evenColor = Color.White.MultiplyAlpha(0.7);
+        readonly Color oddColor = Color.FromHex("#3F51B5");
+        readonly Color needsUpdate = Color.FromHex("#B53F3F");
+
+        #endregion
 
         #region Properties
 
@@ -33,7 +35,7 @@ namespace DominosPizzaPicker.Client.ViewModels
         {
             get { return _selectedPizza; }
             set { SetProperty(ref _selectedPizza, value); }
-        }        
+        }
 
         public ObservableCollection<NamedPizza> PizzaList { get; set; }
 
@@ -65,13 +67,11 @@ namespace DominosPizzaPicker.Client.ViewModels
                 using (var scope = new ActivityIndicatorScope(ActivityIndicator, showIndicator: true, indicatorDelayMs: 500))
                 {
                     PizzaList.Clear();
-                    //var pizzaList = await pizzaViewMan.GetRecentAsync();
-                    //var pizzaList = CachedData.RecentEatenPizzaCache;
 
                     foreach (var p in CachedData.RecentEatenPizzaCache)
                     {
 
-                        // For below, checking if cancel requested then breaking would probably be better (commented out code) than throwing an exception, but it only works if in a loop, so get used to the try/catch/finally pattern
+                        // For below, checking if cancel requested then breaking (commented out code) would probably be better than throwing an exception, but it only works if in a loop, so get used to the try/catch/finally pattern
 
                         // throw exception if there has been a request to cancel
                         Cancellation.ThrowIfCancellationRequested();
@@ -85,10 +85,6 @@ namespace DominosPizzaPicker.Client.ViewModels
                         PizzaList.Add(new NamedPizza
                         {
                             Id = p.Id,
-                            //SauceName = await p.GetSauceName(),
-                            //Topping1Name = await p.GetTopping1Name(),
-                            //Topping2Name = await p.GetTopping2Name(),
-                            //Topping3Name = await p.GetTopping3Name(),
                             SauceName = p.Sauce,
                             Topping1Name = p.Topping1,
                             Topping2Name = p.Topping2,
@@ -96,7 +92,10 @@ namespace DominosPizzaPicker.Client.ViewModels
                             DateEatenText = p.DateEaten.Date.ToString("M/d/yy"),
                             RatingText = p.Rating == 0 ? "No Rating" : p.Rating.ToString(),
                             CommentText = string.IsNullOrEmpty(p.Comment) ? "No Comment" : p.Comment,
-                            RowColor = p.Rating == 0 || string.IsNullOrEmpty(p.Comment) ? needsUpdate : (PizzaList.Count % 2 == 0 ? evenColor : oddColor)
+                            //RowColor = p.Rating == 0 || string.IsNullOrEmpty(p.Comment) ? needsUpdate : (PizzaList.Count % 2 == 0 ? evenColor : oddColor)
+                            RowColor = p.Rating == 0 || string.IsNullOrEmpty(p.Comment) ? needsUpdate : oddColor,
+
+                            RowRippleColor = p.Rating == 0 || string.IsNullOrEmpty(p.Comment) ? Color.YellowGreen : Color.HotPink
                         });
                     }
                 }
@@ -107,14 +106,16 @@ namespace DominosPizzaPicker.Client.ViewModels
             }
             finally
             {
-                Cancellation.Dispose();                
+                Cancellation.Dispose();
             }
         }
 
-        public async void OnSelectedPizzaChanged()
+        public void OnSelectedPizzaChanged()
         {
-            Cancellation.Cancel();
-            await Navigation.PushAsync(new UpdatePizza(SelectedPizza.Id));
+            if (!string.IsNullOrEmpty(SelectedPizza?.Id) && UpdateAnotherPizzaCommand.CanExecute(null))
+            {
+                UpdateAnotherPizzaCommand.Execute(SelectedPizza.Id);
+            }
         }
 
         #endregion
@@ -127,23 +128,29 @@ namespace DominosPizzaPicker.Client.ViewModels
             {
                 OnSelectedPizzaChanged();
             }
+
+            base.OnViewModelPropertyChanged(e);
         }
 
         protected override void InitializeCommands()
         {
             base.InitializeCommands();
-            UpdateAnotherPizzaCommand = new Command(
-                execute: async () =>
+            UpdateAnotherPizzaCommand = new Command<string>(
+                execute: async (string pizzaId) =>
                 {
+                    IsBusy = true;
                     Cancellation.Cancel();
-                    await Navigation.PushAsync(new UpdateSelectSpecific());
+                    Page page = !string.IsNullOrEmpty(pizzaId) ? new UpdatePizza(pizzaId) as Page : new UpdateSelectSpecific() as Page;
+                    await Navigation.PushAsync(page);
+                    IsBusy = false;
                 },
-                canExecute: () =>
+                canExecute: (string a) =>
                 {
-                    return true;
+                    return !IsBusy;
                 });
 
             Commands.Add(UpdateAnotherPizzaCommand);
+            CommandCanExecuteProperties.Add(UpdateAnotherPizzaCommand, new List<string>() { nameof(IsBusy) });
         }
 
         #endregion
@@ -151,6 +158,7 @@ namespace DominosPizzaPicker.Client.ViewModels
         #region Commands
 
         public Command UpdateAnotherPizzaCommand { get; private set; }
+
         #endregion
     }
 
@@ -166,5 +174,6 @@ namespace DominosPizzaPicker.Client.ViewModels
         public string RatingText { get; set; }
         public string CommentText { get; set; }
         public Color RowColor { get; set; }
+        public Color RowRippleColor { get; set; }
     }
 }

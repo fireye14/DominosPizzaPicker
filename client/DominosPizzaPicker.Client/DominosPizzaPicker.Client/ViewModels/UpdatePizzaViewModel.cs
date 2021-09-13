@@ -74,7 +74,7 @@ namespace DominosPizzaPicker.Client.ViewModels
             set
             {
                 // Validate only if value changed
-                if(SetProperty(ref _rating, value))
+                if (SetProperty(ref _rating, value))
                     Validate(nameof(Rating));
             }
         }
@@ -92,14 +92,24 @@ namespace DominosPizzaPicker.Client.ViewModels
             get { return _comment; }
             set { SetProperty(ref _comment, value); }
         }
+
+        public PizzaInputData OriginalPizzaData { get; set; }
+
+
+        public bool IsDirty =>
+            EatenStatus != OriginalPizzaData.EatenStatus || DateEaten != OriginalPizzaData.DateEaten ||
+            Math.Abs(Rating - OriginalPizzaData.Rating) > 0f || Comment != OriginalPizzaData.Comment;
+
         #endregion
 
         #region Constructor
+
         public UpdatePizzaViewModel()
         {
             pizzaViewMan = PizzaViewManager.DefaultManager;
             pizzaMan = PizzaManager.DefaultManager;
         }
+
         #endregion
 
         #region Methods
@@ -107,17 +117,13 @@ namespace DominosPizzaPicker.Client.ViewModels
         public async void LoadPizza(string id)
         {
             await LoadPizzaAsync(id);
-            
+
         }
 
         public async Task LoadPizzaAsync(string id)
         {
             Id = id;
             var pizza = await pizzaViewMan.GetSinglePizza(Id);
-            //SauceName = await pizza.GetSauceName();
-            //Topping1Name = await pizza.GetTopping1Name();
-            //Topping2Name = await pizza.GetTopping2Name();
-            //Topping3Name = await pizza.GetTopping3Name();
             SauceName = pizza.Sauce;
             Topping1Name = pizza.Topping1;
             Topping2Name = pizza.Topping2;
@@ -126,10 +132,22 @@ namespace DominosPizzaPicker.Client.ViewModels
             DateEaten = DateTime.Compare(pizza.DateEaten, DateTime.Parse("01/01/1901")) <= 0 ? DateTime.Today.Date : pizza.DateEaten.Date;
             Rating = pizza.Rating;
             Comment = pizza.Comment;
+
+            if(OriginalPizzaData == null)
+                OriginalPizzaData = new PizzaInputData(EatenStatus, DateEaten, Rating, Comment);
+            else
+            {
+                OriginalPizzaData.EatenStatus = EatenStatus;
+                OriginalPizzaData.DateEaten = DateEaten;
+                OriginalPizzaData.Rating = Rating;
+                OriginalPizzaData.Comment = Comment;
+            }
+
+            UpdateCommand?.ChangeCanExecute();
         }
 
         /// <summary>
-        /// Rating cannot be greater than 10
+        /// Rating cannot be greater than 10 or less than 0
         /// </summary>
         protected bool ValidateRating()
         {
@@ -160,7 +178,7 @@ namespace DominosPizzaPicker.Client.ViewModels
 
         protected override void InitializeCommands()
         {
-            base.InitializeCommands();            
+            base.InitializeCommands();
 
             RefreshCommand = new Command(
                 execute: async () =>
@@ -202,23 +220,25 @@ namespace DominosPizzaPicker.Client.ViewModels
                 },
                 canExecute: () =>
                 {
-                    return IsValid && !IsBusy;
+                    return IsValid && !IsBusy && IsDirty;
                 });
 
-            Commands.AddRange(new Command [] { RefreshCommand, UpdateCommand });
+            Commands.AddRange(new Command[] { RefreshCommand, UpdateCommand });
 
             // any commands in this dictionary will have ChangeCanExecute run when a property in the Value list is changed
-            CommandCanExecuteProperties.Add(UpdateCommand, new List<string>() { nameof(IsValid), nameof(IsBusy) });
+            CommandCanExecuteProperties.Add(UpdateCommand, new List<string>() { nameof(IsValid), nameof(IsBusy), nameof(IsDirty) });
         }
 
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
         {
-            base.OnViewModelPropertyChanged(e);
+            // Check IsDirty status
+            if (e.PropertyName == nameof(EatenStatus) || e.PropertyName == nameof(DateEaten) ||
+                e.PropertyName == nameof(Rating) || e.PropertyName == nameof(Comment))
+            {
+                UpdateCommand.ChangeCanExecute();
+            }
 
-            //if (e.PropertyName == nameof(IsValid))
-            //{
-            //    UpdateCommand.ChangeCanExecute();
-            //}
+            base.OnViewModelPropertyChanged(e);
         }
 
         #endregion
@@ -227,5 +247,21 @@ namespace DominosPizzaPicker.Client.ViewModels
         public Command RefreshCommand { get; private set; }
         public Command UpdateCommand { get; private set; }
         #endregion
+    }
+
+    public class PizzaInputData
+    {
+        public bool EatenStatus;
+        public DateTime DateEaten;
+        public float Rating;
+        public string Comment;
+
+        public PizzaInputData(bool eatenStatus, DateTime dateEaten, float rating, string comment)
+        {
+            EatenStatus = eatenStatus;
+            DateEaten = dateEaten;
+            Rating = rating;
+            Comment = comment;
+        }
     }
 }

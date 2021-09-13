@@ -3,29 +3,130 @@
 
   <style name="MainTheme" parent="MainTheme.Base">
   </style>
+  
   <!-- Base theme applied no matter what API -->
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    
     <!--If you are using revision 22.1 please use just windowNoTitle. Without android:-->
     <item name="windowNoTitle">true</item>
+    
     <!--We will be using the toolbar so no need to show ActionBar-->
     <item name="windowActionBar">false</item>
+
+    <item name="windowActionModeOverlay">true</item>
+    
     <!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette -->
+    
+    
     <!-- colorPrimary is used for the default action bar background -->
     <item name="colorPrimary">#3F51B5</item>
+    <item name="backgroundColor">#3F51B5</item>
+    
     <!-- colorPrimaryDark is used for the status bar -->
     <item name="colorPrimaryDark">#303F9F</item>
-    <!-- colorAccent is used as the default value for colorControlActivated
-         which is used to tint widgets -->
-    <item name="colorAccent">#1976D2</item>
-    <!-- You can also set colorControlNormal, colorControlActivated
-         colorControlHighlight and colorSwitchThumbNormal. -->
-    <item name="windowActionModeOverlay">true</item>
+    
+    <!-- colorAccent is used as the default value for colorControlActivated which is used to tint widgets -->
+    <!--<item name="colorAccent">#1976D2</item>-->
+    <item name="colorAccent">#26b30c</item>
+    
+    <!-- You can also set colorControlNormal, colorControlActivated colorControlHighlight and colorSwitchThumbNormal. -->
 
-    <item name="android:colorActivatedHighlight">#FF4081</item>
+    
+    <!-- green - scroll bar, Entry, picker, etc. when not focused -->
+    <item name="colorControlNormal">#26b30c</item>
+    <!-- this does all buttons-->
+    <!-- red -->
+    <!--<item name="colorButtonNormal">#de1f12</item>-->
+    <item name="colorButtonNormal">#26b30c</item>
+    <item name="android:colorButtonNormal">#26b30c</item>
+    <!-- green - same controls as above when focused and activity indicator-->
+    <item name="colorControlActivated">#26b30c</item>
+    <!-- blue - list view item, "buttonStyle", and picker item ripple effect-->
+    <item name="colorControlHighlight">#212adb</item>
+    <!--<item name="colorControlHighlight">#31de12</item>-->
+    <item name="colorSwitchThumbNormal">#22E6A4</item>
+
+    <!-- orange - date picker dialog -->
+    <item name="android:colorActivatedHighlight">#db4f21</item>
     
     <!--<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>-->
+
+
+    <item name="buttonStyle">@style/myButtonStyle</item>
+    <!--<item name="android:buttonStyle">@style/myButtonStyle</item>-->
+    
+    
+    <!--<item name="actionButtonStyle">@style/myActionButtonStyle</item>-->
+    <!--<item name="borderlessButtonStyle">@style/myBorderlessButtonStyle</item>-->
+    <!--<item name="buttonStyleSmall">@style/myButtonStyleSmall</item>-->
+    <!--<item name="android:textAppearanceButton">@style/myTextAppearanceButton</item>-->
+    <!--<item name ="imageButtonStyle">@style/myImageButtonStyle</item>-->
+
+    <!--<item name="controlBackground">@drawable/control_background_material</item>-->
+
+    
+    
+    
+    
+    <!-- TextAppearance.AppCompat.Widget.Button.Colored will have enabled color as ?android:attr/textColorPrimaryInverse and disabled color as ?android:attr/textColorPrimary with ?android:attr/disabledAlpha -->
+    <!--<item name="android:textAppearanceButton">@style/myTextAppearanceButtonColored</item>-->
+    
+    <!-- TextAppearance.AppCompat.Widget.Button just uses ?android:textColorPrimary (not android:attr/) as text color, but it does change in disabled state, so I assume that is a color defined in its own xml file -->
+    <item name="android:textAppearanceButton">@style/myTextAppearanceButton</item>
+    
+    
   </style>
 
+  <style name="myTextAppearanceButton" parent="TextAppearance.AppCompat.Widget.Button">
+    <item name="android:textAllCaps">false</item>
+  </style>
+
+  <style name="myTextAppearanceButtonColored" parent="@style/TextAppearance.AppCompat.Widget.Button.Colored">
+    <item name="android:textAllCaps">false</item>
+  </style>
+  
+  
+  <!-- I guess "@android:" is required in front of stuff if it isn't AppCompat -->
+  <style name="myButtonStyle" parent="@style/Widget.AppCompat.Button">
+
+    <item name="android:background">@drawable/custom_button_background</item>
+    
+    
+    
+    <!--<item name="android:backgroundTint">#FF4081</item>-->
+    <!--<item name="android:background">@drawable/abc_btn_default_mtrl_shape</item>-->
+    <!--<item name="android:background">@drawable/control_background_material</item>-->    
+    <!--<item name="android:stateListAnimator">@anim/stateListAnimator</item>-->
+        
+  </style>
+
+  <style name="myButtonStyleA" parent="@android:style/Widget.Button">
+    <item name="android:backgroundTint">#31de12</item>    
+  </style>
+  
+  <style name="myActionButtonStyle" parent="@style/Widget.AppCompat.Light.ActionButton">
+    <item name="android:backgroundTint">#31de12</item>
+    <item name="colorControlHighlight">#de1f12</item>
+  </style>
+  
+  <style name="myBorderlessButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
+    <item name="android:backgroundTint">#212adb</item>
+    <item name="colorControlHighlight">#31de12</item>
+  </style>
+  
+  <style name="myButtonStyleSmall" parent="@style/Widget.AppCompat.Button.Small">
+    <item name="android:backgroundTint">#FF4081</item>
+    <item name="colorControlHighlight">#212adb</item>
+  </style>
+
+
+  <style name="myImageButtonStyle" parent="@style/Widget.AppCompat.ImageButton">
+    <item name="android:backgroundTint">#FF4081</item>
+    <item name="colorControlHighlight">#303F9F</item>
+  </style>
+  
+  
+  
   <style name="MainTheme.Splash" parent ="Theme.AppCompat.Light.NoActionBar">
     <item name="android:windowBackground">@drawable/splash_screen</item>
     <item name="android:windowNoTitle">true</item>
@@ -39,4 +140,5 @@
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="colorAccent">#FF4081</item>
   </style>
+  
 </resources>

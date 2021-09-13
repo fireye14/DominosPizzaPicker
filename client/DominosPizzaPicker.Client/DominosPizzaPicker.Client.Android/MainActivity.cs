@@ -20,10 +20,11 @@ namespace DominosPizzaPicker.Client.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            base.OnCreate(savedInstanceState);
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            base.OnCreate(savedInstanceState);
 
             // Initialize Azure Mobile Apps
             CurrentPlatform.Init();
@@ -33,9 +34,12 @@ namespace DominosPizzaPicker.Client.Droid
             // Initialize Xamarin Forms
             Forms.Init(this, savedInstanceState);
 
-
             // Load the main application
             LoadApplication(new App());
+
+            // IMPORTANT: Initialize XFGloss AFTER calling LoadApplication on the Android platform
+            XFGloss.Droid.Library.Init(this, savedInstanceState);
+
         }
     }
 }

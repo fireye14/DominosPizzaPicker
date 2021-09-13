@@ -69,7 +69,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
 #endif
                 IEnumerable<Topping> toppings;
                 // for some god damn reason, you can't use a (true ? a : b) operator in a where clause? 
-                if(usedOnly)
+                if (usedOnly)
                     toppings = await toppingTable.Where(x => x.Used).OrderBy(x => x.Name).ToEnumerableAsync();
                 else
                     toppings = await toppingTable.OrderBy(x => x.Name).ToEnumerableAsync();

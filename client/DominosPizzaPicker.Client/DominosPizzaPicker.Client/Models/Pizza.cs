@@ -82,7 +82,7 @@ namespace DominosPizzaPicker.Client.Models
 
         public async Task<string> ToStringAsync()
         {
-            if(string.IsNullOrEmpty(Topping1Id) || string.IsNullOrEmpty(Topping2Id) || string.IsNullOrEmpty(Topping3Id))
+            if (string.IsNullOrEmpty(Topping1Id) || string.IsNullOrEmpty(Topping2Id) || string.IsNullOrEmpty(Topping3Id))
                 return base.ToString();
 
             var s = await SauceManager.DefaultManager.GetSauce(SauceId);

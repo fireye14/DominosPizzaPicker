@@ -1,0 +1,21 @@
+/*
+    CSS is just another way to style things with global styles in Xamarin. 
+    Probably the preferred method since it can be applied to all platforms instead of being specific to Android.
+    Something to note from my testing is that applying a style to a button that affects color/border/corner radius from css will cause an android style to no longer be applied (bg color from colorButtonNormal attribute will still be applied). 
+    Applying a css style that doesn't affect color/border/corner radius (like letter-spacing for button text) does not cause the android style to go away.
+    This is the same behavior I was seeing with adding border/background color/corner radius attributes to a button's xml; changing either of those would cause the android style to be ignored completely.
+
+    I feel like this has something to do with the fact that android control backgrounds are defined with drawables. I'm guessing that changing something that defines that drawable forces it to be redrawn completely?
+    The class isripple drawable by default - confirmed after creating a custom button renderer and checking the background type; it is still that type even when changing color/border/corner radius
+
+    I think from all the stuff I've been noticing, it's probably best to just avoid android styling as much as possible if I want to have cross platform stuff.     
+    However, sometimes I won't be able to avoid it completely, so in those cases I can use custom renderers and/or platform specific styling
+*/
+#btnUpdate {
+    /*-xf-visual: material;
+    background-color: #26b30c;
+    border-width: 2;
+    border-color: black;
+    border-radius: 100;
+    letter-spacing: 2.5;*/
+}

@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
              xmlns:local="clr-namespace:DominosPizzaPicker.Client.Views"
+             xmlns:controls="clr-namespace:DominosPizzaPicker.Client.Helpers.Controls"
 			 x:Class="DominosPizzaPicker.Client.Views.MainMenu"
 			 Title=""
              BackgroundColor="#3F51B5">
@@ -15,13 +16,18 @@
                 <StackLayout Padding="0,0,0,50">
                     <Image Source="pizza_main_menu.png"/>
                 </StackLayout>
-                <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" BorderWidth="1" Margin="15,5"/>
-                <Button x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" BorderWidth="1" Margin="15,5"/>
-                <Button x:Name="btnStats" Text="Pizza Stats" Clicked="OnbtnStatsClicked" Font="Large" BorderWidth="1" Margin="15,5"/>
-                <!--<Button x:Name="btnLocal" Text="Local URL" Command="{Binding ConnectCommand}" CommandParameter="local" Font="Large" BorderWidth="1" Margin="15,5" />
-                <Button x:Name="btnConveyor" Text="Conveyor URL" Command="{Binding ConnectCommand}" CommandParameter="conveyor" Font="Large" BorderWidth="1" Margin="15,5" />
-                <Button x:Name="btnLocal" Text="Local URL" Command="{Binding ConnectCommand}" CommandParameter="local" Font="Large" BorderWidth="1" Margin="0" />
-                <Button x:Name="btnConveyor" Text="Conveyor URL" Command="{Binding ConnectCommand}" CommandParameter="conveyor" Font="Large" BorderWidth="1" Margin="0" />-->
+                <!-- Uses buttonStyle style because borderwidth is -1 which is default so IsBorderWidthSet returns false -->
+                <!--<Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" BorderWidth="-1" Margin="15,5"/>-->
+                <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" Margin="15,5"/>
+                
+                <!-- Uses buttonStyle style because custom class implementation of IsBorderWidthSet always returns false -->
+                <!--<controls:CustomButton x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" Margin="15,5"/>-->
+                <Button x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" Margin="15,5" />
+                
+                <!-- does not use buttonStyle style because borderwidth is set. still not sure which style this actually uses -->
+                <!-- update, it does respond to buttonStyle, but not the background color/ripple effect... i'm guessing there's a custom renderer fucking shit up somehow -->
+                <!--<Button x:Name="btnStats" Text="Pizza Stats" Clicked="OnbtnStatsClicked" Font="Large" BorderWidth="1" Margin="15,5"/>-->
+                <Button x:Name="btnStats" Text="Pizza Stats" Clicked="OnbtnStatsClicked" Font="Large" Margin="15,5"/>
             </StackLayout>
             <StackLayout Grid.Row="0" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="0,0,0,45">
                 <StackLayout HorizontalOptions="CenterAndExpand" Padding="20,0,20,15">
@@ -33,10 +39,10 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <StackLayout Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand">
-                        <Button x:Name="btnLocal" Text="Local URL" Command="{Binding ConnectCommand}" CommandParameter="local" Font="Medium" BorderWidth="1" Margin="0" WidthRequest="125"/>
+                        <Button x:Name="btnLocal" Text="Local URL" Command="{Binding ConnectCommand}" CommandParameter="local" Font="Medium" Margin="0" WidthRequest="125"/>
                     </StackLayout>
                     <StackLayout Grid.Column="1" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand">
-                        <Button x:Name="btnConveyor" Text="Conveyor URL" Command="{Binding ConnectCommand}" CommandParameter="conveyor" Font="Medium" BorderWidth="1" Margin="0" WidthRequest="125"/>
+                        <Button x:Name="btnConveyor" Text="Conveyor URL" Command="{Binding ConnectCommand}" CommandParameter="conveyor" Font="Medium" Margin="0" WidthRequest="125"/>
                     </StackLayout>
                 </Grid>
             </StackLayout>

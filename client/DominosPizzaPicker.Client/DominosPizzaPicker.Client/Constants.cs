@@ -43,7 +43,7 @@ namespace DominosPizzaPicker.Client
         public static string LocalIISURL = @"http://192.168.1.69/DominosPizzaPicker/";
 
 
-        public static string ConveyorURL = @"https://dominospizzapicker-backend.conveyor.cloud/DominosPizzaPicker/";        
+        public static string ConveyorURL = @"https://dominospizzapicker-backend.conveyor.cloud/DominosPizzaPicker/";
 
         public static int RecentEatenListCount { get { return 50; } }
 

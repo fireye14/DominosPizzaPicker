@@ -1,23 +1,18 @@
 ﻿using DominosPizzaPicker.Client.Models.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace DominosPizzaPicker.Client.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class SplashLoading : ContentPage
-	{
-		public SplashLoading ()
-		{
-			InitializeComponent();
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SplashLoading : ContentPage
+    {
+        public SplashLoading()
+        {
+            InitializeComponent();
 
-            LoadResources();            
+            LoadResources();
         }
 
         // void method called from View constructor (can't be awaited)
@@ -32,7 +27,7 @@ namespace DominosPizzaPicker.Client.Views
             Constants.ApplicationURL = Constants.LocalIISURL;
 
             var pizzaViewMan = PizzaViewManager.DefaultManager;
-            
+
             lblLoading.Text = "Connecting using Local IIS URL...";
             if (!await pizzaViewMan.PingConnection())
             {

@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace DominosPizzaPicker.Client.Droid
 {
-    [Activity(Label = "Pizza Picker", Icon = "@mipmap/icon", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true)]
+    [Activity(Label = "Pizza Picker", Icon = "@mipmap/pizza", RoundIcon = "@mipmap/pizza_round", Theme = "@style/MainTheme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : FormsAppCompatActivity
     {
 

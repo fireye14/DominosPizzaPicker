@@ -70,7 +70,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
 #endif
                 IEnumerable<Sauce> sauces;
                 if (usedOnly)
-                    sauces = await sauceTable.Where(x => x.Used).OrderBy(x =>x.Name).ToEnumerableAsync();
+                    sauces = await sauceTable.Where(x => x.Used).OrderBy(x => x.Name).ToEnumerableAsync();
                 else
                     sauces = await sauceTable.OrderBy(x => x.Name).ToEnumerableAsync();
 

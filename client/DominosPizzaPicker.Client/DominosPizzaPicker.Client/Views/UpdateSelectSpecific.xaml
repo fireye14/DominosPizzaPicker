@@ -13,13 +13,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!-- Button -->
+        <!-- Continue Button -->
         <StackLayout Grid.Row="0">
-            <Button Text="Continue" Command="{Binding ContinueCommand}" FontSize="18"/>
+            <Button x:Name="btnContinue" Text="Continue" Command="{Binding ContinueCommand}" FontSize="18" Margin="10,15,10,10"/>
         </StackLayout>
         <!-- Sauce Picker -->
         <StackLayout Grid.Row="1">
-            <Picker Title="Select A Sauce"  TextColor="Black" ItemsSource="{Binding SauceList}" SelectedItem="{Binding SelectedSauce, Mode=TwoWay}" HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black"/>
+            <Picker Title="Select a Sauce"  TextColor="Black" ItemsSource="{Binding SauceList}" SelectedItem="{Binding SelectedSauce, Mode=TwoWay}" HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black"/>
         </StackLayout>
         <!-- Topping Picker -->
         <Grid Grid.Row="2" RowSpacing="0" ColumnSpacing="8">
@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!-- Meats Tab -->
-            <Button Text="Meats" Grid.Row="0" Grid.Column="0" Command="{Binding TabTappedCommand}" CommandParameter="1" VerticalOptions="Center" BackgroundColor="#5FACE8" TextColor="Black" CornerRadius="0">
+            <Button Text="Meats" Grid.Row="0" Grid.Column="0" Command="{Binding TabTappedCommand}" CommandParameter="1" VerticalOptions="Center" BackgroundColor="#5FACE8" TextColor="Black" CornerRadius="0" >
                 <Button.Triggers>
                     <DataTrigger TargetType="Button" Binding="{Binding MeatTabSelected}" Value="True">
                         <Setter Property="BackgroundColor" Value="#115285"/>

@@ -11,11 +11,11 @@ using Xamarin.Forms.Xaml;
 
 namespace DominosPizzaPicker.Client.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class UpdateSelectSpecific : CustomContentPage<UpdateSelectSpecificViewModel>
-	{
-		public UpdateSelectSpecific ()
-		{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class UpdateSelectSpecific : CustomContentPage<UpdateSelectSpecificViewModel>
+    {
+        public UpdateSelectSpecific()
+        {
             ViewModel.Navigation = Navigation;
         }
 
