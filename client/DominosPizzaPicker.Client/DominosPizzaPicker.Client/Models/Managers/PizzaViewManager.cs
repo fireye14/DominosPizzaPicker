@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Linq.Expressions;
 
 /*
  * To add Offline Sync Support:
@@ -161,8 +162,23 @@ namespace DominosPizzaPicker.Client.Models.Managers
 
         public async Task<long> GetUneatenPizzaCount()
         {
+            return await GetCountWithCondition(x => !x.Eaten && x.IsRandomlyGenerated);
+        }
+
+        public async Task<long> GetEatenPizzaCount()
+        {
+            return await GetCountWithCondition(x => x.Eaten && x.IsRandomlyGenerated);
+        }
+
+        public async Task<long> GetTotalPizzaCount()
+        {
+            return await GetCountWithCondition(x => x.IsRandomlyGenerated);
+        }
+
+        public async Task<long> GetCountWithCondition(Expression<Func<PizzaView, bool>> conditionExpression)
+        {
             // Take(0) ensures no actual records are returned     
-            return ((IQueryResultEnumerable<PizzaView>)await pizzaViewTable.Take(0).Where(x => !x.Eaten && x.IsRandomlyGenerated).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
+            return ((IQueryResultEnumerable<PizzaView>)await pizzaViewTable.Take(0).Where(conditionExpression).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
         }
 
         public async Task<ObservableCollection<PizzaView>> GetRecentAsync(bool syncItems = false)

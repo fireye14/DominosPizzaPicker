@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:CustomContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DominosPizzaPicker.Client.Views.PizzaStatsMain"
+             xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
+             xmlns:vm="clr-namespace:DominosPizzaPicker.Client.ViewModels"
+             x:TypeArguments="vm:PizzaStatsMainViewModel"
+             Title=""
+             BackgroundColor="#3F51B5">
+    <StackLayout>
+        <Label Text="Total Pizza Stats: " FontSize="32" TextColor="Black" Padding="10,15"/>
+        <Label Text="{Binding TotalEatenPizzaText}" FontSize="18" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Padding="10,0,10,20"/>
+    </StackLayout>
+</c:CustomContentPage>

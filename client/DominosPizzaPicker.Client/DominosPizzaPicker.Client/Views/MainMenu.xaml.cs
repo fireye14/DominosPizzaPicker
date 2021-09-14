@@ -10,12 +10,6 @@ namespace DominosPizzaPicker.Client.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainMenu : CustomMainMenu
 	{
-        private async void OnbtnStatsClicked(object sender, EventArgs e)
-        {
-
-        }
-
-
         public Command ConnectCommand { get; private set; }
 
         public MainMenu() : base()
