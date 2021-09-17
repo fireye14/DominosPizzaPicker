@@ -11,108 +11,81 @@ namespace DominosPizzaPicker.Client.Helpers
     public class CustomViewModel : Disposable, INotifyPropertyChanged
     {
         #region Properties and Backing Fields
+
         public ActivityIndicator ActivityIndicator { get; set; }
+
         public INavigation Navigation { get; set; }
 
-
         private Dictionary<string, Func<bool>> _validations;
-        public Dictionary<string, Func<bool>> Validations
-        {
-            get { return _validations = _validations ?? new Dictionary<string, Func<bool>>(); }
-        }
+        public Dictionary<string, Func<bool>> Validations => _validations = _validations ?? new Dictionary<string, Func<bool>>();
+
 
         private List<string> _errors;
-        public List<string> Errors
-        {
-            get { return _errors = _errors ?? new List<string>(); }
-        }
+        public List<string> Errors => _errors = _errors ?? new List<string>();
 
         private List<Command> _commands;
-        public List<Command> Commands
-        {
-            get { return _commands = _commands ?? new List<Command>(); }
-        }
+        public List<Command> Commands => _commands = _commands ?? new List<Command>();
 
         private Dictionary<Command, List<string>> _commandCanExecuteProperties;
-        public Dictionary<Command, List<string>> CommandCanExecuteProperties
-        {
-            get { return _commandCanExecuteProperties = _commandCanExecuteProperties ?? new Dictionary<Command, List<string>>(); }
-        }
+        public Dictionary<Command, List<string>> CommandCanExecuteProperties => _commandCanExecuteProperties = _commandCanExecuteProperties ?? new Dictionary<Command, List<string>>();
 
         // Result of most recent validation
-        public bool IsValid { get { return Errors != null && !Errors.Any(); } }
+        public bool IsValid => Errors != null && !Errors.Any();
 
         private bool _isBusy; 
         public bool IsBusy
         {
-            get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         private CancellationHelper _cancellation;
-        protected CancellationHelper Cancellation
+        protected CancellationHelper Cancellation => _cancellation = _cancellation ?? new CancellationHelper();
+
+        protected bool EnableViewModelPropertyChanged
         {
-            get { return _cancellation = _cancellation ?? new CancellationHelper(); }
+            set
+            {
+                PropertyChanged -= ViewModel_PropertyChanged;
+
+                if (!value)
+                    return;
+
+                PropertyChanged += ViewModel_PropertyChanged;
+            }
         }
 
         #endregion
 
         #region Constructor
+
         public CustomViewModel()
         {
             PropertyChanged += ViewModel_PropertyChanged;
             AddValidations();
             InitializeCommands();
         }
+
         #endregion
 
         #region Events
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // TODO: add a bool property something like "EnablePropertyChangedEvent" that removes this event handler from PropertyChanged if set to false and readds it when set to true
-            // this will ensure that the property changed event will not be triggered when already inside a property changed event call
-            // also gives some flexibility for individual view models
-
-            //        private bool EnablePropertyChangedEvent
-            //        {
-            //          set
-            //          {
-            //              if (this.CurrentTransactionHeader == null)
-            //                  return;
-            //              this.CurrentTransactionHeader.PropertyChanged -= new PropertyChangedEventHandler(this.CurrentTransactionHeader_PropertyChanged);
-            //              if (!value)
-            //                  return;
-            //              this.CurrentTransactionHeader.PropertyChanged += new PropertyChangedEventHandler(this.CurrentTransactionHeader_PropertyChanged);
-            //          }
-            //        }
-
-
-            //try
-            //{
-            //    if (this.CurrentTransactionHeader == null)
-            //        return;
-            //    this.EnablePropertyChangedEvent = false;
-            //    this.OnCurrentTransactionHeaderPropertyChanged(e);
-            //}
-            //catch (Exception ex)
-            //{
-            //    ClientContext.HandleError(ex, (Control)this);
-            //}
-            //finally
-            //{
-            //    this.EnablePropertyChangedEvent = true;
-            //}
-
-
             try
             {
+                EnableViewModelPropertyChanged = false;
                 OnViewModelPropertyChanged(e);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                EnableViewModelPropertyChanged = true;
             }
 
         }
@@ -202,8 +175,6 @@ namespace DominosPizzaPicker.Client.Helpers
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-
 
         #endregion
 
