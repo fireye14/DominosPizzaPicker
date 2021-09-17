@@ -115,7 +115,8 @@ namespace DominosPizzaPicker.Client.Helpers
                 else if (!Errors.Contains(v.Key))
                     Errors.Add(v.Key);
             }
-            OnPropertyChanged(nameof(IsValid));
+            if(Validations.Count > 0)
+                OnPropertyChanged(nameof(IsValid));
             return IsValid;
         }
 
