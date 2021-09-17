@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:DominosPizzaPicker.Client.Views"
              xmlns:controls="clr-namespace:DominosPizzaPicker.Client.Helpers.Controls"
 			 x:Class="DominosPizzaPicker.Client.Views.MainMenu"
+             x:DataType="local:MainMenu"
 			 Title=""
              BackgroundColor="#3F51B5">
     <ContentPage.Content>
@@ -18,7 +19,8 @@
                 </StackLayout>
                 <!-- Uses buttonStyle style because borderwidth is -1 which is default so IsBorderWidthSet returns false -->
                 <!--<Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" BorderWidth="-1" Margin="15,5"/>-->
-                <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" Margin="15,5"/>
+                <!--<Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" Margin="15,5"/>-->
+                <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandomPizza}" Font="Large" Margin="15,5"/>
                 
                 <!-- Uses buttonStyle style because custom class implementation of IsBorderWidthSet always returns false -->
                 <!--<controls:CustomButton x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" Margin="15,5"/>-->

@@ -4,7 +4,8 @@
              xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
              xmlns:vm="clr-namespace:DominosPizzaPicker.Client.ViewModels"
              x:TypeArguments="vm:PickRandomViewModel"
-             x:Class="DominosPizzaPicker.Client.Views.PickRandom"             
+             x:Class="DominosPizzaPicker.Client.Views.PickRandom"     
+             x:DataType="vm:PickRandomViewModel"
              Title=""
              BackgroundColor="#3F51B5">
     <ContentPage.Content>

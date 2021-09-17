@@ -5,6 +5,7 @@
              xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
              xmlns:vm="clr-namespace:DominosPizzaPicker.Client.ViewModels"
              x:TypeArguments="vm:PizzaStatsMainViewModel"
+             x:DataType="vm:PizzaStatsMainViewModel"
              Title=""
              BackgroundColor="#3F51B5">
     <StackLayout>

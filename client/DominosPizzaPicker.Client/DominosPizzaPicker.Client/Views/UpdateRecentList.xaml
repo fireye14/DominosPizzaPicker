@@ -6,6 +6,7 @@
              xmlns:xfg="clr-namespace:XFGloss;assembly=XFGloss"
              x:TypeArguments="vm:UpdateRecentListViewModel"
              x:Class="DominosPizzaPicker.Client.Views.UpdateRecentList"
+             x:DataType="vm:UpdateRecentListViewModel"
              Title=""
              BackgroundColor="#3F51B5">
     <Grid RowSpacing="0">
@@ -21,7 +22,7 @@
         <ListView x:Name="pizzaList" Grid.Row="1" ItemsSource="{Binding PizzaList}" SelectedItem="{Binding SelectedPizza, Mode=TwoWay}" SelectionMode="Single" VerticalOptions="FillAndExpand" HasUnevenRows="True" IsPullToRefreshEnabled="false" SeparatorVisibility="Default" SeparatorColor="Black">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell xfg:CellGloss.BackgroundColor="{Binding RowColor}" xfg:CellGloss.RippleColor="{Binding RowRippleColor}">
+                    <ViewCell x:DataType="vm:NamedPizza" xfg:CellGloss.BackgroundColor="{Binding RowColor}" xfg:CellGloss.RippleColor="{Binding RowRippleColor}">
                     <!--<ViewCell>-->
                         <!--<xfg:CellGloss.BackgroundGradient>-->
                             <!--<xfg:Gradient StartColor="HotPink" EndColor="CadetBlue" IsRotationTopToBottom="True">-->

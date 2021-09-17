@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:DominosPizzaPicker.Client.ViewModels"
              x:TypeArguments="vm:UpdateSelectSpecificViewModel"
              x:Class="DominosPizzaPicker.Client.Views.UpdateSelectSpecific"
+             x:DataType="vm:UpdateSelectSpecificViewModel"
              Title=""
              BackgroundColor="#3F51B5">
     <Grid RowSpacing="20" Padding="15,20">
@@ -55,7 +56,7 @@
             <ListView x:Name="MeatList" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding MeatList}" SelectedItem="{Binding SelectedTopping, Mode=TwoWay}" SelectionMode="Single" IsVisible="{Binding MeatTabSelected}" VerticalOptions="FillAndExpand" BackgroundColor="White">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <ViewCell x:DataType="vm:NamedTopping">
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Padding="5,5">
                                     <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding ToppingEnabled}" Color="#115285" VerticalOptions="CenterAndExpand"/>
@@ -72,7 +73,7 @@
             <ListView x:Name="NonMeatList" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding NonMeatList}" SelectedItem="{Binding SelectedTopping, Mode=TwoWay}" VerticalOptions="FillAndExpand" SelectionMode="Single" IsVisible="{Binding NonMeatTabSelected}" BackgroundColor="White">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <ViewCell x:DataType="vm:NamedTopping">
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Padding="5,5">
                                     <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding ToppingEnabled}" Color="#115285" VerticalOptions="CenterAndExpand"/>
