@@ -12,6 +12,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
 using System.Threading;
+using DominosPizzaPicker.Client.Helpers.CustomViews;
 
 namespace DominosPizzaPicker.Client.ViewModels
 {
@@ -135,22 +136,15 @@ namespace DominosPizzaPicker.Client.ViewModels
         protected override void InitializeCommands()
         {
             base.InitializeCommands();
-            UpdateAnotherPizzaCommand = new Command<string>(
-                execute: async (string pizzaId) =>
-                {
-                    IsBusy = true;
-                    Cancellation.Cancel();
-                    Page page = !string.IsNullOrEmpty(pizzaId) ? new UpdatePizza(pizzaId) as Page : new UpdateSelectSpecific() as Page;
-                    await Navigation.PushAsync(page);
-                    IsBusy = false;
-                },
-                canExecute: (string a) =>
-                {
-                    return !IsBusy;
-                });
 
-            Commands.Add(UpdateAnotherPizzaCommand);
-            CommandCanExecuteProperties.Add(UpdateAnotherPizzaCommand, new List<string>() { nameof(IsBusy) });
+            UpdateAnotherPizzaCommand = this.CreateCommand<string>(async pizzaId =>
+            {
+                Cancellation.Cancel();
+                Page page = !string.IsNullOrEmpty(pizzaId)
+                    ? new UpdatePizza(pizzaId) as Page
+                    : new UpdateSelectSpecific() as Page;
+                await Navigation.PushAsync(page);
+            });
         }
 
         #endregion

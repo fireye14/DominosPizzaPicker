@@ -139,33 +139,17 @@ namespace DominosPizzaPicker.Client.ViewModels
         {
             base.InitializeCommands();
 
-            TabTappedCommand = new Command(
-                execute: (object tabNum) =>
-                {
-                    TabFunctions[Convert.ToInt16(tabNum)]();
-                });
+            TabTappedCommand = this.CreateCommand<object>(tabNum => TabFunctions[Convert.ToInt16(tabNum)]());
 
-            ContinueCommand = new Command(
-                execute: async () =>
+            ContinueCommand = this.CreateCommand(async () =>
                 {
-                    IsBusy = true;
                     var toppingList = new List<string>();
                     toppingList.AddRange(MeatList.Where(x => x.IsSelected).Select(x => x.Id));
                     toppingList.AddRange(NonMeatList.Where(x => x.IsSelected).Select(x => x.Id));
                     var pizza = await pizzaMan.GetSinglePizza(SauceLookup.FirstOrDefault(x => x.Name == SelectedSauce).Id, toppingList);
                     await Navigation.PushAsync(new UpdatePizza(pizza.Id));
-                    IsBusy = false;
-                },
-                canExecute: () =>
-                {
-                    return !IsBusy && SelectedToppingCount >= 3 && !string.IsNullOrEmpty(SelectedSauce);
-                });
-
-
-
-
-            Commands.AddRange(new[] { TabTappedCommand, ContinueCommand });
-            CommandCanExecuteProperties.Add(ContinueCommand, new List<string>() { nameof(SelectedTopping), nameof(SelectedSauce), nameof(IsBusy) });
+                }, () => SelectedToppingCount >= 3 && !string.IsNullOrEmpty(SelectedSauce),
+                new List<string> { nameof(SelectedTopping), nameof(SelectedSauce) });
         }
 
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
@@ -195,11 +179,6 @@ namespace DominosPizzaPicker.Client.ViewModels
         #endregion
 
         #region Methods
-
-        public async Task<ObservableCollection<Topping>> GetToppingListAsync()
-        {
-            return await toppingMan.GetToppingsAsync(true);
-        }
 
         public async Task LoadLists()
         {

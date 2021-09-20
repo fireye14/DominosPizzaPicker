@@ -23,8 +23,8 @@ namespace DominosPizzaPicker.Client.Helpers
         private List<string> _errors;
         public List<string> Errors => _errors = _errors ?? new List<string>();
 
-        private List<Command> _commands;
-        public List<Command> Commands => _commands = _commands ?? new List<Command>();
+        //private List<Command> _commands;
+        //public List<Command> Commands => _commands = _commands ?? new List<Command>();
 
         private Dictionary<Command, List<string>> _commandCanExecuteProperties;
         public Dictionary<Command, List<string>> CommandCanExecuteProperties => _commandCanExecuteProperties = _commandCanExecuteProperties ?? new Dictionary<Command, List<string>>();
@@ -145,15 +145,6 @@ namespace DominosPizzaPicker.Client.Helpers
 
         protected virtual void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
         {
-            // update any commands that change enabled state if IsBusy is true
-            if (e.PropertyName == nameof(IsBusy))
-            {
-                foreach (var c in Commands)
-                {
-                    c.ChangeCanExecute();
-                }
-            }
-
             foreach (var c in CommandCanExecuteProperties)
             {
                 if (c.Value.Contains(e.PropertyName))

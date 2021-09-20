@@ -30,12 +30,12 @@ namespace DominosPizzaPicker.Client.Helpers.CustomViews
             NavigateCommand = new Command<Type>(
                 execute: async (Type pageType) =>
                 {
+                    IsBusy = true;
                     await Navigation.PushAsync((Page)Activator.CreateInstance(pageType));
+                    IsBusy = false;
                 },
-                canExecute: (Type a) =>
-                {
-                    return !IsBusy;
-                });
+                canExecute: (Type a) => !IsBusy);
+
 
             BindingContext = this;
         }

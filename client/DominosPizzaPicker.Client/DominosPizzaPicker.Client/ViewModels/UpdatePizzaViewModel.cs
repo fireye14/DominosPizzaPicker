@@ -117,7 +117,6 @@ namespace DominosPizzaPicker.Client.ViewModels
         public async void LoadPizza(string id)
         {
             await LoadPizzaAsync(id);
-
         }
 
         public async Task LoadPizzaAsync(string id)
@@ -180,53 +179,35 @@ namespace DominosPizzaPicker.Client.ViewModels
         {
             base.InitializeCommands();
 
-            RefreshCommand = new Command(
-                execute: async () =>
-                {
-                    // called when button is clicked
-                    IsBusy = true;
-                    await LoadPizzaAsync(Id);
-                    IsBusy = false;
-                });
+            RefreshCommand = this.CreateCommand(async () => await LoadPizzaAsync(Id));
 
-            UpdateCommand = new Command(
-                execute: async () =>
+            UpdateCommand = this.CreateCommand(async () =>
+            {
+                if (Validate())
                 {
-                    if (Validate())
+                    var pizza = await pizzaViewMan.GetSinglePizza(Id);
+                    pizza.Eaten = EatenStatus;
+                    pizza.DateEaten = EatenStatus ? DateEaten : (DateTime)SqlDateTime.MinValue;
+                    pizza.Rating = Rating;
+                    pizza.Comment = Comment.Trim();
+                    await pizzaMan.SavePizzaAsync(pizza);
+
+                    if (pizza.Eaten)
                     {
-                        IsBusy = true;
-                        var pizza = await pizzaViewMan.GetSinglePizza(Id);
-                        pizza.Eaten = EatenStatus;
-                        pizza.DateEaten = EatenStatus ? DateEaten : (DateTime)SqlDateTime.MinValue;
-                        pizza.Rating = Rating;
-                        pizza.Comment = Comment.Trim();
-                        await pizzaMan.SavePizzaAsync(pizza);
-
-                        if (pizza.Eaten)
-                        {
-                            CachedData.AddToEatenPizzaCache(pizza);
-                        }
-                        else
-                        {
-                            //CachedData.EatenPizzaCache.Clear();
-                            //CachedData.EatenPizzaCache = await pizzaMan.GetRecentAsync();
-                            await CachedData.RemoveFromEatenPizzaCache(pizza);
-                        }
-
-                        MessagingCenter.Send(this, nameof(Messages.SuccessfulUpdate));
-                        IsBusy = false;
-                        RefreshCommand.Execute(null);
+                        CachedData.AddToEatenPizzaCache(pizza);
                     }
-                },
-                canExecute: () =>
-                {
-                    return IsValid && !IsBusy && IsDirty;
-                });
+                    else
+                    {
+                        //CachedData.EatenPizzaCache.Clear();
+                        //CachedData.EatenPizzaCache = await pizzaMan.GetRecentAsync();
+                        await CachedData.RemoveFromEatenPizzaCache(pizza);
+                    }
 
-            Commands.AddRange(new Command[] { RefreshCommand, UpdateCommand });
+                    MessagingCenter.Send(this, nameof(Messages.SuccessfulUpdate));
+                    RefreshCommand.Execute(null);
+                }
+            }, () => IsValid && IsDirty, new List<string> { nameof(IsValid), nameof(IsDirty) });
 
-            // any commands in this dictionary will have ChangeCanExecute run when a property in the Value list is changed
-            CommandCanExecuteProperties.Add(UpdateCommand, new List<string>() { nameof(IsValid), nameof(IsBusy), nameof(IsDirty) });
         }
 
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)

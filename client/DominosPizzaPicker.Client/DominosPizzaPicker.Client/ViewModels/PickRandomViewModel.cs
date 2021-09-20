@@ -50,7 +50,6 @@ namespace DominosPizzaPicker.Client.ViewModels
         #region Constructors
         public PickRandomViewModel()
         {
-            CanGenerate = true;
         }
 
         #endregion
@@ -60,23 +59,10 @@ namespace DominosPizzaPicker.Client.ViewModels
         /// </summary>
         protected override void OnViewModelPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(CanGenerate))
+            if (e.PropertyName == nameof(GeneratedPizza))
             {
-                //(SetRandomUneatenPizzaTextCommand as Command).ChangeCanExecute();
-                //(UpdateEatenStatusCommand as Command).ChangeCanExecute();
-            }
-            else if (e.PropertyName == nameof(GeneratedPizza))
-            {
-                //(UpdateEatenStatusCommand as Command).ChangeCanExecute();
 
                 PizzaText = GeneratedPizza == null ? string.Empty : GeneratedPizza.ToString();
-                //CanGenerate = true;
-                //t.Start();
-                // Run synchronously so the SetProperty of CanGenerate doesn't error
-                //t.RunSynchronously();
-                //t.Wait();
-                //CanGenerate = true;
-                //t.ContinueWith(x => CanGenerate = true);
             }
 
             base.OnViewModelPropertyChanged(e);
@@ -86,25 +72,10 @@ namespace DominosPizzaPicker.Client.ViewModels
         {
             base.InitializeCommands();
 
-            SetRandomUneatenPizzaTextCommand = new Command(
-                execute: async () =>
-                {
-                    // called when button is clicked
-                    IsBusy = true;
-                    await GenerateRandomUneatenPizza();
-                    IsBusy = false;
-                },
-                canExecute: () =>
-                {
-                    // called when binding is first defined in View and when CanExecuteChanged is fired (fired when calling ChangeCanExecute())
-                    //return CanGenerate;
-                    return !IsBusy;
-                });
+            SetRandomUneatenPizzaTextCommand = this.CreateCommand(async () => await GenerateRandomUneatenPizza());
 
-            UpdateEatenStatusCommand = new Command(
-                execute: async () =>
+            UpdateEatenStatusCommand = this.CreateCommand(async () =>
                 {
-                    IsBusy = true;
                     GeneratedPizza.Eaten = true;
                     GeneratedPizza.DateEaten = DateTime.Today;
                     await pizzaMan.SavePizzaAsync(GeneratedPizza);
@@ -112,16 +83,10 @@ namespace DominosPizzaPicker.Client.ViewModels
                     // Send Successful Update message to the View
                     MessagingCenter.Send(this, nameof(Messages.SuccessfulUpdate));
                     GeneratedPizza = null;
-                    IsBusy = false;
                 },
-                canExecute: () =>
-                {
-                    return GeneratedPizza != null && !IsBusy;
-                });
-
-            CommandCanExecuteProperties.Add(SetRandomUneatenPizzaTextCommand, new List<string> { nameof(IsBusy) });
-            CommandCanExecuteProperties.Add(UpdateEatenStatusCommand, new List<string> { nameof(IsBusy), nameof(GeneratedPizza) });
+                () => GeneratedPizza != null, new List<string> { nameof(GeneratedPizza) });
         }
+
         #endregion
 
         #region Commands
