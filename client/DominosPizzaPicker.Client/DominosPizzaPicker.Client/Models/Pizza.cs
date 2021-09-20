@@ -40,7 +40,7 @@ namespace DominosPizzaPicker.Client.Models
 
 
         [Version]
-        public string Version { get; set; }
+        public byte[] Version { get; set; }
 
 
         #region Methods

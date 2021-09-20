@@ -190,7 +190,9 @@ namespace DominosPizzaPicker.Client.Models.Managers
                 //var t = pizzaViewTable.Take(Constants.RecentEatenListCount);
 
                 // Get the top 'RecentEatenListCount' recently eaten pizzas. if date eaten is the same, order by row version
-                IEnumerable<PizzaView> pizzas = await pizzaViewTable.Take(Constants.RecentEatenListCount).Where(x => x.Eaten).OrderByDescending(x => x.DateEaten).ThenByDescending(x => x.Version).ToEnumerableAsync();
+                IEnumerable<PizzaView> pizzas = await pizzaViewTable.Take(Constants.RecentEatenListCount)
+                    .Where(x => x.Eaten).OrderByDescending(x => x.DateEaten)
+                    .ThenByDescending(x => x.Version).ToEnumerableAsync();
 
                 return new ObservableCollection<PizzaView>(pizzas);
             }
@@ -224,7 +226,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
         {
             try
             {
-                var eatenCount = ((IQueryResultEnumerable<Pizza>)await pizzaViewTable.Take(0).Where(x => x.Eaten).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
+                var eatenCount = await GetEatenPizzaCount();
                 if (eatenCount < Constants.RecentEatenListCount)
                     return null;
 

@@ -36,17 +36,6 @@ namespace DominosPizzaPicker.Client.ViewModels
 
         #endregion
 
-        #region Command Properties
-
-        private bool _canGenerate;
-        public bool CanGenerate
-        {
-            get { return _canGenerate; }
-            set { SetProperty(ref _canGenerate, value); }
-        }
-
-        #endregion
-
         #region Constructors
         public PickRandomViewModel()
         {
@@ -79,7 +68,7 @@ namespace DominosPizzaPicker.Client.ViewModels
                     GeneratedPizza.Eaten = true;
                     GeneratedPizza.DateEaten = DateTime.Today;
                     await pizzaMan.SavePizzaAsync(GeneratedPizza);
-                    CachedData.AddToEatenPizzaCache(GeneratedPizza);
+                    await CachedData.AddToEatenPizzaCache(GeneratedPizza);
                     // Send Successful Update message to the View
                     MessagingCenter.Send(this, nameof(Messages.SuccessfulUpdate));
                     GeneratedPizza = null;

@@ -194,12 +194,10 @@ namespace DominosPizzaPicker.Client.ViewModels
 
                     if (pizza.Eaten)
                     {
-                        CachedData.AddToEatenPizzaCache(pizza);
+                        await CachedData.AddToEatenPizzaCache(pizza);
                     }
                     else
                     {
-                        //CachedData.EatenPizzaCache.Clear();
-                        //CachedData.EatenPizzaCache = await pizzaMan.GetRecentAsync();
                         await CachedData.RemoveFromEatenPizzaCache(pizza);
                     }
 

@@ -22,9 +22,12 @@ namespace DominosPizzaPicker.Client.Models
         public string Comment { get; set; }
 
 
+        /// <summary>
+        /// Used to be defined as a string, but this would result in the cached list of pizzas being ordered incorrectly. Because of this, I also defined ByteArrayComparer class.
+        /// It was really weird because the order would be fine if running the recent pizzas query and pulling results directly from the SQL DB, but be incorrect when ordering results here in C#
+        /// </summary>
         [Version]
-        public string Version { get; set; }
-
+        public byte[] Version { get; set; }
 
         public bool IsRandomlyGenerated { get; set; }
 

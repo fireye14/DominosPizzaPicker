@@ -3,9 +3,11 @@ using DominosPizzaPicker.Client.Models.Managers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using DominosPizzaPicker.Client.Helpers.Comparers;
 
 namespace DominosPizzaPicker.Client
 {
@@ -19,7 +21,7 @@ namespace DominosPizzaPicker.Client
         /// <summary>
         /// 
         /// </summary>
-        public static void AddToEatenPizzaCache(PizzaView pizza)
+        public static async Task AddToEatenPizzaCache(PizzaView pizza)
         {
             if (!pizza.Eaten)
                 return;
@@ -32,8 +34,13 @@ namespace DominosPizzaPicker.Client
                 RecentEatenPizzaCache.Remove(addPizza);
             }
 
-            RecentEatenPizzaCache.Add(pizza);
-            RecentEatenPizzaCache = new ObservableCollection<PizzaView>(RecentEatenPizzaCache.OrderByDescending(x => x.DateEaten).ThenByDescending(x => x.Version));
+            var pizzaMan = PizzaViewManager.DefaultManager;
+            addPizza = await pizzaMan.GetSinglePizza(pizza.Id);
+
+            RecentEatenPizzaCache.Add(addPizza);
+            RecentEatenPizzaCache = new ObservableCollection<PizzaView>(RecentEatenPizzaCache
+                .OrderByDescending(x => x.DateEaten).ThenByDescending(x => x.Version, new ByteArrayComparer()));
+
             while (RecentEatenPizzaCache.Count > Constants.RecentEatenListCount)
             {
                 RecentEatenPizzaCache.RemoveAt(RecentEatenPizzaCache.Count - 1);
@@ -60,12 +67,15 @@ namespace DominosPizzaPicker.Client
             if (newPizza != null)
                 RecentEatenPizzaCache.Add(newPizza);
 
+            RecentEatenPizzaCache = new ObservableCollection<PizzaView>(RecentEatenPizzaCache
+                .OrderByDescending(x => x.DateEaten).ThenByDescending(x => x.Version, new ByteArrayComparer()));
+
         }
 
         public static async Task<bool> ResetConnection()
         {
             PizzaViewManager.DefaultManager.SetConnection();
-            PizzaManager.DefaultManager.SetConnection();                        
+            PizzaManager.DefaultManager.SetConnection();
             SauceManager.DefaultManager.SetConnection();
             SauceManager.DefaultManager.SetConnection();
 
