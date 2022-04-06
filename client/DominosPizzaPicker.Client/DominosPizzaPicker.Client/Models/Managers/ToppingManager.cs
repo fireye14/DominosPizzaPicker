@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,12 +53,13 @@ namespace DominosPizzaPicker.Client.Models.Managers
             this.client.SyncContext.InitializeAsync(store);
 
             toppingTable = client.GetSyncTable<Topping>();
+            toppingTable.F
 #else
             toppingTable = client.GetTable<Topping>();
 #endif
         }
 
-        public async Task<ObservableCollection<Topping>> GetToppingsAsync(bool usedOnly = false, bool syncItems = false)
+        public async Task<ObservableCollection<Topping>> GetToppingsAsync(bool usedOnly = true, bool syncItems = false)
         {
             try
             {
@@ -88,7 +90,19 @@ namespace DominosPizzaPicker.Client.Models.Managers
         }
 
 
+        public async Task<IEnumerable<Topping>> GetAllMeats(bool usedOnly = true)
+        {
+            if(usedOnly)
+                return await GetToppingsWithCondition(x => x.IsMeat && x.Used);
 
+            return await GetToppingsWithCondition(x => x.IsMeat);
+        }
+
+        public async Task<IEnumerable<Topping>> GetToppingsWithCondition(Expression<Func<Topping, bool>> conditionExpression)
+        {
+            // Take(0) ensures no actual records are returned     
+            return await toppingTable.Where(conditionExpression).IncludeTotalCount().ToEnumerableAsync();
+        }
 
         public async Task<Topping> GetTopping(string Id, bool syncItems = false)
         {

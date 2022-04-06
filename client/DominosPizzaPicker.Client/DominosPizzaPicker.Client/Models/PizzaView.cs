@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DominosPizzaPicker.Client.Models
@@ -11,8 +12,14 @@ namespace DominosPizzaPicker.Client.Models
 
         public string Sauce { get; set; }
         public string Topping1 { get; set; }
+        public bool Topping1IsMeat { get; set; }
+        public bool Topping1IsCheese { get; set; }
         public string Topping2 { get; set; }
+        public bool Topping2IsMeat { get; set; }
+        public bool Topping2IsCheese { get; set; }
         public string Topping3 { get; set; }
+        public bool Topping3IsMeat { get; set; }
+        public bool Topping3IsCheese { get; set; }
         public bool Eaten { get; set; }
 
         public DateTime DateEaten { get; set; }
@@ -34,7 +41,17 @@ namespace DominosPizzaPicker.Client.Models
 
         public override string ToString()
         {
-            return string.Join(", ", new[] { Sauce, Topping1, Topping2, Topping3 });
+            return string.Join(", ",  Sauce, Topping1, Topping2, Topping3);
+        }
+
+        public string ToString(string separator)
+        {
+            return string.Join(separator, Sauce, Topping1, Topping2, Topping3);
+        }
+
+        public string ToStringNewLine()
+        {
+            return ToString(Environment.NewLine);
         }
 
         public override bool Equals(object obj)

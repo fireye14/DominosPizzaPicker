@@ -156,6 +156,7 @@
     <Compile Include="DataObjects\PizzaView.cs" />
     <Compile Include="DataObjects\Sauce.cs" />
     <Compile Include="DataObjects\Topping.cs" />
+    <Compile Include="Extensions\ExpandPropertyAttribute.cs" />
     <Compile Include="Migrations\202001290306225_InitialCreate.cs" />
     <Compile Include="Migrations\202001290306225_InitialCreate.designer.cs">
       <DependentUpon>202001290306225_InitialCreate.cs</DependentUpon>

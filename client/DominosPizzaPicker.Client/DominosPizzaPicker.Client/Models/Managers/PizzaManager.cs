@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DominosPizzaPicker.Client.Models.Managers
 {
@@ -19,7 +20,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
         IMobileServiceSyncTable<Pizza> pizzaTable;
 #else
         IMobileServiceTable<Pizza> pizzaTable;
-        IMobileServiceTable<PizzaView> pizzaViewTable;
+        //IMobileServiceTable<PizzaView> pizzaViewTable;
 #endif
         #endregion
 
@@ -60,7 +61,7 @@ namespace DominosPizzaPicker.Client.Models.Managers
             pizzaTable = client.GetSyncTable<Pizza>();
 #else
             pizzaTable = client.GetTable<Pizza>();
-            pizzaViewTable = client.GetTable<PizzaView>();
+            //pizzaViewTable = client.GetTable<PizzaView>();
 #endif
         }
 
@@ -175,11 +176,50 @@ namespace DominosPizzaPicker.Client.Models.Managers
             return null;
         }
 
+        public async Task<Pizza> GetRandomUneatenPizzaWithCondition(Expression<Func<Pizza, bool>> conditionExpression, bool syncItems = false)
+        {
+            try
+            {
+                var uneatenCount = await GetCountWithCondition(conditionExpression);
+
+                // random int between 0 and uneatenCount
+                var rand = (new Random()).Next(Convert.ToInt32(uneatenCount));
+
+                var pizza = await pizzaTable.Skip(rand).Take(1).Where(conditionExpression).ToEnumerableAsync();
+
+
+                return pizza.FirstOrDefault();
+            }
+            catch (MobileServiceInvalidOperationException msioe)
+            {
+                Debug.WriteLine("Invalid sync operation: {0}", new[] { msioe.Message });
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Sync error: {0}", new[] { e.Message });
+            }
+            return null;
+        }
 
         public async Task<long> GetUneatenPizzaCount()
         {
+            return await GetCountWithCondition(x => !x.Eaten);
+        }
+
+        public async Task<long> GetEatenPizzaCount()
+        {
+            return await GetCountWithCondition(x => x.Eaten);
+        }
+
+        public async Task<long> GetTotalPizzaCount()
+        {
+            return await GetCountWithCondition(x => true);
+        }
+
+        public async Task<long> GetCountWithCondition(Expression<Func<Pizza, bool>> conditionExpression)
+        {
             // Take(0) ensures no actual records are returned     
-            return ((IQueryResultEnumerable<Pizza>)await pizzaTable.Take(0).Where(x => !x.Eaten).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
+            return ((IQueryResultEnumerable<Pizza>)await pizzaTable.Take(0).Where(conditionExpression).IncludeTotalCount().ToEnumerableAsync()).TotalCount;
         }
 
         public async Task<ObservableCollection<Pizza>> GetRecentAsync(bool syncItems = false)

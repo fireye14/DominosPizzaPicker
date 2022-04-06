@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:CustomContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     x:Class="DominosPizzaPicker.Client.Views.PickRandomPizza"
+                     xmlns:c="clr-namespace:DominosPizzaPicker.Client.Helpers.CustomViews"
+                     xmlns:vm="clr-namespace:DominosPizzaPicker.Client.ViewModels"
+                     x:TypeArguments="vm:PickRandomPizzaViewModel"
+                     x:DataType="vm:PickRandomPizzaViewModel"
+                     Title="Pick Random Pizza"
+                     BackgroundColor="#3F51B5" >
+    <ScrollView>
+        <StackLayout>
+            <Grid Padding="15,15,15,0" ColumnSpacing="30" RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Sauce Picker -->
+                <Label Grid.Row="0" Grid.Column="0" Text="Sauce" FontAttributes="Bold" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="18" VerticalTextAlignment="Center" />
+                <Picker Grid.Row="0" Grid.Column="1" Title="Sauce"  TextColor="Black" ItemsSource="{Binding SauceList}" SelectedItem="{Binding SelectedSauce, Mode=TwoWay}" 
+                        HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black" />
+                <!-- Topping Pickers -->
+                <Label Grid.Row="1" Grid.Column="0" Text="Topping 1" FontAttributes="Bold" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="18" VerticalTextAlignment="Center"/>
+                <Picker x:Name="pckTopping1" Grid.Row="1" Grid.Column="1" Title="Topping 1"  TextColor="Black" ItemsSource="{Binding ToppingList}" SelectedItem="{Binding SelectedToppings[0], Mode=TwoWay}" 
+                        HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black" />
+                <Label Grid.Row="2" Grid.Column="0" Text="Topping 2" FontAttributes="Bold" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="18" VerticalTextAlignment="Center"/>
+                <Picker x:Name="pckTopping2" Grid.Row="2" Grid.Column="1" Title="Topping 2"  TextColor="Black" ItemsSource="{Binding ToppingList}" SelectedItem="{Binding SelectedToppings[1], Mode=TwoWay}" 
+                        HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black" />
+                <Label Grid.Row="3" Grid.Column="0" Text="Topping 3" FontAttributes="Bold" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="18" VerticalTextAlignment="Center"/>
+                <Picker x:Name="pckTopping3" Grid.Row="3" Grid.Column="1" Title="Topping 3"  TextColor="Black" ItemsSource="{Binding ToppingList}" SelectedItem="{Binding SelectedToppings[2], Mode=TwoWay}" 
+                        HorizontalOptions="FillAndExpand" FontSize="18" TitleColor="Black" />
+            </Grid>
+            <!-- Generate Button -->
+            <Button x:Name="btnGenerate" Text="Generate" Command="{Binding GenerateCommand}" FontSize="18" HorizontalOptions="FillAndExpand" Margin="15,40,15,20"/>
+            <!-- Pizza Text -->
+            <Label x:Name="lblPizza" Text="{Binding PizzaText}" Margin="10, 20" FontSize="18" TextColor="Black" />
+            <!-- Update Button -->
+            <Button x:Name="btnUpdate" Text="Mark Pizza as Eaten" Command="{Binding UpdateEatenStatusCommand}" FontSize="18" HorizontalOptions="FillAndExpand" Margin="15,5"/>
+        </StackLayout>
+    </ScrollView>
+</c:CustomContentPage>

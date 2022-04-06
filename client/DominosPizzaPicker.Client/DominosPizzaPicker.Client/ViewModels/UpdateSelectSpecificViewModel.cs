@@ -187,10 +187,11 @@ namespace DominosPizzaPicker.Client.ViewModels
             // Sauces            
             SauceLookup = await sauceMan.GetSaucesAsync(true);
             SauceList = SauceLookup.Select(x => x.Name).ToList();
+
             OnPropertyChanged(nameof(SauceList));
 
             // Toppings
-            var toppingList = await toppingMan.GetToppingsAsync(true);
+            var toppingList = await toppingMan.GetToppingsAsync();
             foreach (var t in toppingList)
             {
                 var nt = new NamedTopping { Id = t.Id, Name = t.Name.Trim(), IsSelected = false, ToppingEnabled = true, IsMeat = t.IsMeat };

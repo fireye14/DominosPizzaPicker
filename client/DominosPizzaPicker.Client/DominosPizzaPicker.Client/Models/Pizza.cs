@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DominosPizzaPicker.Client.Models.Managers;
 using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json;
 
 namespace DominosPizzaPicker.Client.Models
 {
@@ -16,6 +18,7 @@ namespace DominosPizzaPicker.Client.Models
         public string Topping2Id { get; set; }
         public string Topping3Id { get; set; }
         public bool Eaten { get; set; }
+
 
         // when setting this property, make sure the time is set to UTC
         // for some reason, when this object is mapped back to the Backend, it automatically converts to UTC, but then when retrieving the data, it never gets converted back
@@ -83,7 +86,7 @@ namespace DominosPizzaPicker.Client.Models
         public async Task<string> ToStringAsync()
         {
             if (string.IsNullOrEmpty(Topping1Id) || string.IsNullOrEmpty(Topping2Id) || string.IsNullOrEmpty(Topping3Id))
-                return base.ToString();
+                return this.ToString();
 
             var s = await SauceManager.DefaultManager.GetSauce(SauceId);
             var t1 = await ToppingManager.DefaultManager.GetTopping(Topping1Id);
@@ -91,6 +94,11 @@ namespace DominosPizzaPicker.Client.Models
             var t3 = await ToppingManager.DefaultManager.GetTopping(Topping3Id);
 
             return string.Join(", ", new[] { s.Name, t1.Name, t2.Name, t3.Name });
+        }
+
+        public override string ToString()
+        {
+            return string.Join(", ", new[] { SauceId, Topping1Id, Topping2Id, Topping3Id });
         }
 
         public async Task<string> GetDebugDisplay()

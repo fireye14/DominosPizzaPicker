@@ -19,15 +19,15 @@
                 </StackLayout>
                 <!-- Uses buttonStyle style because borderwidth is -1 which is default so IsBorderWidthSet returns false -->
                 <!--<Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" BorderWidth="-1" Margin="15,5"/>-->
-                <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" Margin="15,5"/>
-                <!--<Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandomPizza}" Font="Large" Margin="15,5"/>-->
+                <!--<Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandom}" Font="Large" Margin="15,5"/>-->
+                <Button x:Name="btnRandom" Text="Pick Random Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PickRandomPizza}" Font="Large" Margin="15,5"/>
                 
                 <!-- Uses buttonStyle style because custom class implementation of IsBorderWidthSet always returns false -->
                 <!--<controls:CustomButton x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" Margin="15,5"/>-->
                 <Button x:Name="btnUpdate" Text="Update Pizza" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:UpdateRecentList}" Font="Large" Margin="15,5" />
                 
                 <!-- does not use buttonStyle style because borderwidth is set. still not sure which style this actually uses -->
-                <!-- update, it does respond to buttonStyle, but not the background color/ripple effect... i'm guessing there's a custom renderer fucking shit up somehow -->
+                <!-- update, it does respond to buttonStyle, but not the background color/ripple effect... i'm guessing there's a custom renderer messing it up somehow -->
                 <!--<Button x:Name="btnStats" Text="Pizza Stats" Clicked="OnbtnStatsClicked" Font="Large" BorderWidth="1" Margin="15,5"/>-->
                 <Button x:Name="btnStats" Text="Pizza Stats" Command="{Binding NavigateCommand}" CommandParameter="{x:Type local:PizzaStatsMain}" Font="Large" Margin="15,5"/>
             </StackLayout>

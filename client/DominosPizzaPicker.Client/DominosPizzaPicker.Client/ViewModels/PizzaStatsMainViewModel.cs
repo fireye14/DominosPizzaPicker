@@ -38,6 +38,14 @@ namespace DominosPizzaPicker.Client.ViewModels
             ? "  of  eaten "
             : $"{EatenPizzaCount} of {TotalPizzaCount} eaten ({GetPercentage(EatenPizzaCount, TotalPizzaCount)}%)";
 
+
+        private string _highestRatedPizzaText;
+        public string HighestRatedPizzaText
+        {
+            get => _highestRatedPizzaText;
+            set => SetProperty(ref _highestRatedPizzaText, value);
+        }
+
         private long _distinctSauceCount;
         public long DistinctSauceCount
         {
@@ -114,11 +122,14 @@ namespace DominosPizzaPicker.Client.ViewModels
             TotalPizzaCount = await pizzaViewMan.GetTotalPizzaCount();
             EatenPizzaCount = await pizzaViewMan.GetEatenPizzaCount();
 
+            var highestRatedPizza = await pizzaViewMan.GetHighestRatedPizza();
+            HighestRatedPizzaText = $"{highestRatedPizza.Rating} : {highestRatedPizza.ToString()}";
+
             // How many pizzas have Alfredo Sauce. Same number for all sauces
             DistinctSauceCount =
                 await pizzaViewMan.GetCountWithCondition(x => x.IsRandomlyGenerated && x.Sauce == "Alfredo Sauce");
 
-            // How many pizzas have Premium Chicken. Same number for all toppings
+            // How many pizzas have Premium Chicken. Same number for all individual toppings
             DistinctToppingCount =
                 await pizzaViewMan.GetCountWithCondition(x =>
                     x.IsRandomlyGenerated && (x.Topping1 == "Premium Chicken" || x.Topping2 == "Premium Chicken" ||

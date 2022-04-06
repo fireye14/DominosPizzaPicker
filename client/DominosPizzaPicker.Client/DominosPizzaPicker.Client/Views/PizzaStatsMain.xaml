@@ -11,6 +11,8 @@
     <StackLayout>
         <Label Text="Total Pizza Stats: " FontSize="32" TextColor="Black" Padding="10,15"/>
         <Label Text="{Binding TotalEatenPizzaText}" FontSize="18" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Padding="10,0,10,20"/>
+        <Label Text="Highest Rated Pizza: " FontSize="32" TextColor="Black" Padding="10,15"/>
+        <Label Text="{Binding HighestRatedPizzaText}" FontSize="18" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Padding="10,0,10,20"/>
         <Label Text="Alfredo Sauce Pizza Stats: " FontSize="32" TextColor="Black" Padding="10,15"/>
         <Label Text="{Binding AlfredoSauceEatenText}" FontSize="18" TextColor="Black" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" Padding="10,0,10,20"/>
         <Label Text="Premium Chicken Pizza Stats: " FontSize="32" TextColor="Black" Padding="10,15"/>

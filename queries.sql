@@ -11,26 +11,22 @@ where v.IsRandomlyGenerated = 1
 group by s.Name
 
 
--- count of how many times each distinct topping appears on a pizza; this is the same for all toppings
-select Name, sum(total) total
-from (
-select t.Name, count(t.Name) total
-from PizzaView v
-left join toppings t on t.Name = v.Topping1
-where v.IsRandomlyGenerated = 1
-group by t.Name
-union all
-select t.Name, count(t.Name) total
-from PizzaView v
-left join toppings t on t.Name = v.Topping2
-where v.IsRandomlyGenerated = 1
-group by t.Name
-union all
-select t.Name, count(t.Name) total
-from PizzaView v
-left join toppings t on t.Name = v.Topping3
-where v.IsRandomlyGenerated = 1
-group by t.Name
-) a
-group by Name
-order by Name
+
+-- count of how many pizzas have been eaten for each topping out of how many total pizzas contain each topping
+select n.Topping, n.total as NumPizzasEaten, t.total as OfTotal from (
+	select Name as Topping, count(*) as total
+	from Toppings t
+	inner join PizzaView p on t.Name = p.Topping1 or t.Name = p.Topping2 or t.Name = p.Topping3
+	where p.Eaten = 1 and p.IsRandomlyGenerated = 1
+	group by t.Name
+) n
+inner join (
+	select Name as Topping, count(*) as total
+	from Toppings t
+	inner join PizzaView p on t.Name = p.Topping1 or t.Name = p.Topping2 or t.Name = p.Topping3
+	where p.IsRandomlyGenerated = 1
+	group by t.Name
+) t on n.Topping = t.Topping
+
+
+-- TODO: do the same as above, but with sauces

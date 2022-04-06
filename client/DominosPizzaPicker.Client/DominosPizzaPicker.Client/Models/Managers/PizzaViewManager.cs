@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using Org.Apache.Http.Conn;
 
 /*
  * To add Offline Sync Support:
@@ -159,6 +161,58 @@ namespace DominosPizzaPicker.Client.Models.Managers
             return null;
         }
 
+        public async Task<PizzaView> GetRandomUneatenPizzaWithCondition(Expression<Func<PizzaView, bool>> conditionExpression, bool syncItems = false)
+        {
+            try
+            {
+                var uneatenCount = await GetCountWithCondition(conditionExpression);
+
+                // random int between 0 and uneatenCount
+                var rand = (new Random()).Next(Convert.ToInt32(uneatenCount));
+
+                // IsRandomlyGenerated = true if its sauce and all of its toppings have Used = true
+                //var pizza = await pizzaViewTable.Skip(rand).Take(1).Where(conditionExpression).ToEnumerableAsync();
+                var pizza = pizzaViewTable.Skip(rand).Take(1).Where(conditionExpression);
+
+
+
+                // example of how to join tables using lambda expressions 
+                // this method depends on having the pizzas and toppings both in an Enumerable beforehand, so doesn't play nice with the server queries
+                // it's like ideally i need to get nothing but a count, then get a random from 1 to that count, then skip the rand number and take 1.
+                // that way, the SQL server is doing all the work because apparently i can't do that with these types of queries
+                //var toppings = await ToppingManager.DefaultManager.GetToppingsAsync();
+                ////var pizzaView = await pizzaViewTable.Where(conditionExpression).IncludeTotalCount().ToListAsync();
+                //var pizzaView = await pizzaViewTable.Where(conditionExpression).IncludeTotalCount().ToListAsync();
+
+                //var count = pizzaView.Count;
+
+                //var test = pizzaView
+                //    .Join(toppings, p => p.Topping1, t1 => t1.Name, (p, t1) => new { p, t1 })
+                //    .Join(toppings, pt1 => pt1.p.Topping2, t2 => t2.Name, (pt1, t2) => new { pt1, t2 })
+                //    .Join(toppings, pt2 => pt2.pt1.p.Topping3, t3 => t3.Name, (pt2, t3) => new { pt2, t3 })
+                //    .Where(pt3 => pt3.t3.IsMeat && pt3.pt2.t2.IsMeat && pt3.pt2.pt1.t1.IsMeat)
+                //    .Select((pt3) => pt3.pt2.pt1.p)
+                //    .ToList();
+
+                //rand = new Random().Next(Convert.ToInt32(test.Count));
+
+                //return test.Where((p, c) => c == rand).FirstOrDefault();
+
+                //return pizza.FirstOrDefault();
+                //var test = pizza.Query.Expression = 
+                return (await pizza.ToEnumerableAsync()).FirstOrDefault();
+            }
+            catch (MobileServiceInvalidOperationException msioe)
+            {
+                Debug.WriteLine("Invalid sync operation: {0}", new[] { msioe.Message });
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Sync error: {0}", new[] { e.Message });
+            }
+            return null;
+        }
+
 
         public async Task<long> GetUneatenPizzaCount()
         {
@@ -218,6 +272,20 @@ namespace DominosPizzaPicker.Client.Models.Managers
             return null;
         }
 
+        public async Task<PizzaView> GetHighestRatedPizza()
+        {
+            try
+            {
+                IEnumerable<PizzaView> pizza = await pizzaViewTable.Take(1).Where(x => x.Eaten && x.Rating > 0).OrderByDescending(x => x.Rating).ToEnumerableAsync();
+
+                return pizza.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Save error: {0}", new[] { e.Message });
+            }
+            return null;
+        }
 
         /// <summary>
         /// Called after a pizza is changed from eaten to not eaten; need to update the cache with a new pizza

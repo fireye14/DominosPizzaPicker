@@ -19,7 +19,7 @@ namespace DominosPizzaPicker.Client.Views
         public async void LoadResources()
         {
             await LoadResourcesAsync();
-            Application.Current.MainPage = new NavigationPage(new MainMenu());
+            Application.Current.MainPage = new NavigationPage(new MainMenu()) { BarTextColor = Color.Black};
         }
 
         public async Task LoadResourcesAsync()
